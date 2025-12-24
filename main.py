@@ -2,6 +2,7 @@ import os
 import librosa
 import numpy as np
 import soundfile as sf
+from typing import Dict
 
 # Paths to stems produced by Demucs (or similar)
 VOCALS = "separated/htdemucs/dheera_dheera/vocals.mp3"
@@ -101,3 +102,45 @@ if peak_direct > 1.0:
     direct_mix = direct_mix / peak_direct
 sf.write("direct_mix.mp3", direct_mix, sr)
 print("Written: direct_mix.mp3 (raw stem sum, no segmentation)")
+
+
+def compare_signals(reference: np.ndarray, test: np.ndarray) -> Dict[str, float]:
+    """
+    Compare two mono signals with simple, fast metrics.
+    - MAE / RMSE capture average error
+    - SNR (dB) shows how loud the error is vs. the reference
+    - Pearson correlation captures shape similarity
+    """
+    min_len = min(len(reference), len(test))
+    if min_len == 0:
+        return {"mae": np.nan, "rmse": np.nan, "snr_db": np.nan, "corr": np.nan}
+
+    ref = reference[:min_len]
+    tst = test[:min_len]
+    diff = ref - tst
+
+    mae = float(np.mean(np.abs(diff)))
+    rmse = float(np.sqrt(np.mean(diff ** 2)))
+
+    noise_power = np.mean(diff ** 2) + 1e-12
+    signal_power = np.mean(ref ** 2) + 1e-12
+    snr_db = float(10 * np.log10(signal_power / noise_power))
+
+    # Avoid NaNs when signals are constant
+    ref_std = np.std(ref)
+    tst_std = np.std(tst)
+    if ref_std > 0 and tst_std > 0:
+        corr = float(np.corrcoef(ref, tst)[0, 1])
+    else:
+        corr = 1.0 if np.allclose(ref, tst) else 0.0
+
+    return {"mae": mae, "rmse": rmse, "snr_db": snr_db, "corr": corr}
+
+
+# Compare the reconstructed mix to the direct stem sum
+metrics = compare_signals(direct_mix, mix)
+print(
+    "Comparison (direct_mix vs reconstructed_mix): "
+    f"MAE={metrics['mae']:.6f}, RMSE={metrics['rmse']:.6f}, "
+    f"SNR={metrics['snr_db']:.2f} dB, Corr={metrics['corr']:.4f}"
+)
