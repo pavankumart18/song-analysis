@@ -73,3 +73,31 @@ for idx, (s, e) in enumerate(segments, 1):
     sf.write(out_nv, nonv_audio, sr)
 
     print(f"Written: {out_v} and {out_nv}")
+
+# Reconstruct continuous stems and full mix using detected boundaries
+recon_v = np.zeros_like(vocals)
+for s, e in segments:
+    recon_v[s:e] = vocals[s:e]
+
+# Keep full non-vocals so music is not muted during vocal gaps
+recon_nv = nonvocals.copy()
+
+mix = recon_v + recon_nv
+# Simple normalization to avoid clipping
+peak = np.max(np.abs(mix))
+if peak > 1.0:
+    mix = mix / peak
+
+sf.write("reconstructed_vocals.mp3", recon_v, sr)
+sf.write("reconstructed_nonvocals.mp3", recon_nv, sr)
+sf.write("reconstructed_mix.mp3", mix, sr)
+
+print("Written: reconstructed_vocals.mp3, reconstructed_nonvocals.mp3, reconstructed_mix.mp3")
+
+# Also provide a direct sum of stems (no gating/segmentation); should be closest to original
+direct_mix = vocals + nonvocals
+peak_direct = np.max(np.abs(direct_mix))
+if peak_direct > 1.0:
+    direct_mix = direct_mix / peak_direct
+sf.write("direct_mix.mp3", direct_mix, sr)
+print("Written: direct_mix.mp3 (raw stem sum, no segmentation)")
