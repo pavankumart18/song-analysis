@@ -1,0 +1,6 @@
+file 'C:/Users/admin/Desktop/song analysis/cheppave_chirugali/segmented_parts/00_Intro.mp3'
+file 'C:/Users/admin/Desktop/song analysis/cheppave_chirugali/segmented_parts/01_Pallavi.mp3'
+file 'C:/Users/admin/Desktop/song analysis/cheppave_chirugali/segmented_parts/02_Interlude_1.mp3'
+file 'C:/Users/admin/Desktop/song analysis/cheppave_chirugali/segmented_parts/03_Charanam_1.mp3'
+file 'C:/Users/admin/Desktop/song analysis/cheppave_chirugali/segmented_parts/04_Interlude_2.mp3'
+file 'C:/Users/admin/Desktop/song analysis/cheppave_chirugali/segmented_parts/05_Charanam_2.mp3'

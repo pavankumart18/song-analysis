@@ -1,0 +1,38 @@
+[
+  {
+    "label": "Intro",
+    "start": 0.0,
+    "end": 37.0,
+    "type": "instrumental"
+  },
+  {
+    "label": "Pallavi",
+    "start": 37.0,
+    "end": 96.0,
+    "type": "vocals"
+  },
+  {
+    "label": "Interlude 1",
+    "start": 96.0,
+    "end": 108.5,
+    "type": "instrumental"
+  },
+  {
+    "label": "Charanam 1",
+    "start": 108.5,
+    "end": 194.5,
+    "type": "vocals"
+  },
+  {
+    "label": "Interlude 2",
+    "start": 194.5,
+    "end": 215.0,
+    "type": "instrumental"
+  },
+  {
+    "label": "Charanam 2",
+    "start": 215.0,
+    "end": 311.81,
+    "type": "vocals"
+  }
+]

@@ -16,52 +16,21 @@ The pipeline consists of three main steps:
     *   Runs **Demucs** (using `uvx/uv`) to separate the song into `vocals.mp3` and `no_vocals.mp3`.
     *   Output path: `[song_folder]/separated/htdemucs/song/`.
 
-3.  **Analysis & Reconstruction (`main.py`)**:
-    *   Process each song folder.
-    *   **Segmentation**: Detects vocal activity and slices both vocal and backing tracks into aligned segments (stored in `segments_vocals/` and `segments_nonvocals/`).
-    *   **Reconstruction**: Stitches segments back together to create `reconstructed_mix.mp3`.
-    *   **Validation**: Generates `direct_mix.mp3` (simple sum of stems) and compares it with the reconstructed mix.
+## Analysis & Reconstruction (`main.py`)
+    *   **Process**: Analyzes each song folder.
+    *   **Structure Analysis**: Uses energy-based block detection + LLM to identify 'Pallavi', 'Charanam', and 'Interludes'.
+    *   **Verification**: Generates a **Markdown Report** comparing detected segments with LLM-estimated Song Metadata (Intro length, Vocal Start).
+    *   **Player Generation**: Creates a `song_player.html` for interactive playback of segmented parts.
+    *   **Validation**: Slices the original audio into labeled parts (`segmented_parts/`) for manual verification.
 
-## Metrics & Validation Results
+## Verification & Reports
 
-To validate the reconstruction quality, we compare the **Reconstructed Mix** (processed) against the **Direct Mix** (simple sum of stems). High correlations and SNR values indicate that the segmentation process successfully preserved the audio content without artifacts.
+The system now generates a **Verification Report** (`[SongName]_verification_report.md`) for each song. 
 
-| Song Name | Segments Found | MAE (Mean Absolute Error) | SNR (Signal-to-Noise Ratio) | Correlation |
-| :--- | :---: | :---: | :---: | :---: |
-| **aakasham_digivachi** | 30 | 0.000257 | 40.83 dB | 1.0000 |
-| **cheppave_chirugali** | 17 | 0.000303 | 35.69 dB | 0.9999 |
-| **devuda_devuda** | 31 | 0.000431 | 28.67 dB | 0.9993 |
-| **dheeradheera** | 17 | 0.000123 | 47.39 dB | 1.0000 |
-| **edo_oka_raagam** | 36 | 0.000275 | 40.96 dB | 1.0000 |
-| **gummadi_gummadi** | 26 | 0.000194 | 36.60 dB | 0.9999 |
-| **manava_manava** | 19 | 0.000191 | 43.34 dB | 1.0000 |
-| **my_name_is_billa** | 9 | 0.000088 | 54.69 dB | 1.0000 |
-| **neeve** | 18 | 0.000151 | 47.47 dB | 1.0000 |
-| **netho_cheppana** | 14 | 0.000204 | 42.78 dB | 1.0000 |
-| **priyatama** | 22 | 0.000163 | 41.02 dB | 1.0000 |
-
-### Metric Definitions
-*   **MAE (Mean Absolute Error)**: Average absolute difference between the reconstructed signal and the original signal. Lower is better.
-*   **SNR (Signal-to-Noise Ratio)**: Measures the ratio of signal power to noise (error) power. Higher values (>30-40dB) indicate excellent reconstruction quality.
-*   **Correlation**: Pearson correlation coefficient. A value of **1.0000** means the waves are identical in shape.
-
-## Usage
-
-### Prerequisites
-- Python 3.10+
-- `uv` package manager (automatically installed/used by scripts)
-- FFmpeg (must be in PATH)
-
-### Running the Pipeline
-
-To run the full pipeline (separation -> analysis):
-
-```bash
-python process_folders.py
-python main.py
-```
-
-*Note: `process_folders.py` will skip songs that have already been separated.*
+This report provides:
+1.  **Expected Metadata**: Estimates from the LLM about where the vocals *should* start and typical structure hints.
+2.  **Detected Segmentation**: The actual start/end timestamps and labels found by the analysis engine.
+3.  **Comparision**: A side-by-side view to quickly spot if "Pallavi" started at 0:33 (correct) vs 0:10 (noise).
 
 ## Output Structure
 
@@ -69,8 +38,8 @@ For each song (e.g., `song_name/`):
 
 *   `song.mp3`: Original source.
 *   `separated/`: Demucs output (vocals/no_vocals).
-*   `segments_vocals/`: Individual active vocal clips.
-*   `segments_nonvocals/`: Corresponding backing track clips.
-*   `reconstructed_mix.mp3`: Recombined audio (validation artifact).
-*   `direct_mix.mp3`: Raw sum of stems (reference artifact).
-*   `reconstructed_vocals.mp3` & `reconstructed_nonvocals.mp3`: Intermediate full-length tracks.
+*   `song_structure.json`: High-level structural data (Pallavi, Charanam, etc.).
+*   `*_verification_report.md`: Report comparing detected vs expected structure.
+*   `song_player.html`: Interactive HTML5 player.
+*   `segmented_parts/`: Folder containing actual MP3 slices of each detected section (Intro, Pallavi, etc.) for listening.
+*   `song_reconstructed_master.mp3`: Full concatenation of the sliced parts (should sound like the original).

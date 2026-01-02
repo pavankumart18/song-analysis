@@ -1,0 +1,4 @@
+file 'C:/Users/admin/Desktop/song analysis/neeve/segmented_parts/00_Intro.mp3'
+file 'C:/Users/admin/Desktop/song analysis/neeve/segmented_parts/01_Pallavi.mp3'
+file 'C:/Users/admin/Desktop/song analysis/neeve/segmented_parts/02_Interlude_1.mp3'
+file 'C:/Users/admin/Desktop/song analysis/neeve/segmented_parts/03_Charanam_1.mp3'

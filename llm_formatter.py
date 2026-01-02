@@ -1,0 +1,308 @@
+import requests
+import json
+import time
+
+class LLMFormatter:
+    def __init__(self):
+        self.api_url = "https://llmfoundry.straive.com/openai/v1/chat/completions"
+        self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRwYXZhbi5rdW1hckBncmFtZW5lci5jb20ifQ.dIjgC3eykiiux4vJW0HvpARLLgjAoVFgU5XJIfZ94hY"
+        self.headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"
+        }
+        self.model = "gpt-4o" # Assuming a capable model is available, or user implied default. Using a standard placeholder or "gpt-4o" as is common with OpenAI compatible endpoints. If fails, I might try "gpt-3.5-turbo" or "gemini-1.5-pro" if supported, but usually these proxied endpoints map to OpenAI models. I'll stick to 'gpt-4o' or 'gpt-4-turbo' for best reasoning. Let's try 'gpt-4o'.
+
+    def generate_structure(self, blocks, song_name="Unknown Song", estimated_start=0):
+        """
+        Sends blocks to LLM and returns semantic structure.
+        """
+        print(f"[LLM] Sending blocks for {song_name}...")
+        
+        # Prepare blocks with IDs to ensure strict mapping
+        indexed_blocks = []
+        for i, b in enumerate(blocks):
+            indexed_blocks.append({
+                "id": i,
+                "type": b['type'],
+                "start": b['start'],
+                "end": b['end'],
+                "duration": round(b['end'] - b['start'], 2)
+            })
+
+        user_message = json.dumps({
+            "song_name": song_name,
+            "song_type": "Indian film song",
+            "estimated_main_vocals_start_time": estimated_start,
+            "blocks": indexed_blocks
+        }, indent=2)
+        
+        system_prompt = """
+        You are a Senior Audio ML + Music Intelligence Engineer with strong understanding of Indian (Telugu/Tamil/Hindi) film song structure.
+        
+        Input: A list of segmented audio blocks (vocals/instrumental) with IDs and timestamps.
+        
+        Your Goal: Assign a Label to each block ID based on its sequence and duration.
+        
+        CRITICAL: Do NOT change the timestamps. The input is effectively ground truth for audio activity.
+        
+        HINT: The database estimates the 'Main Vocals' (Pallavi) start around the provided 'estimated_main_vocals_start_time'.
+        - Any vocal blocks significantly BEFORE this time are likely 'Humming', 'Intro Ad-lib', or 'Bridge', NOT the Pallavi.
+        - The vocal block closest to or containing this timestamp is likely the start of 'Pallavi'.
+        
+        Rules for Labeling:
+        1. Vocal blocks:
+           - Use the hint above to distinguish 'Intro Humming' from 'Pallavi'.
+           - Vocal blocks after Pallavi are 'Charanam 1', 'Charanam 2', etc.
+        2. Instrumental blocks:
+           - Label as 'Interlude 1', 'Interlude 2', 'Intro', or 'Outro'.
+        
+        Output Format:
+        A JSON array of ONLY objects with "id" and "label".
+        Example:
+        [
+          { "id": 0, "label": "Intro Humming" },
+          { "id": 1, "label": "Intro" },
+          { "id": 2, "label": "Pallavi" }
+        ]
+        """
+        
+        payload = {
+            "model": "gpt-4o", 
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            "temperature": 0.0
+        }
+
+        response = None
+        try:
+            response = requests.post(self.api_url, headers=self.headers, json=payload, timeout=60)
+            response.raise_for_status()
+            
+            data = response.json()
+            content = data["choices"][0]["message"]["content"]
+            
+            # Clean up potential markdown
+            if "```json" in content:
+                content = content.replace("```json", "").replace("```", "")
+            elif "```" in content:
+                 content = content.replace("```", "")
+            
+            labels_list = json.loads(content.strip())
+            
+            # Merge labels back into original blocks
+            # Create a map for quick lookup
+            label_map = { item['id']: item['label'] for item in labels_list }
+            
+            final_structure = []
+            for i, b in enumerate(blocks):
+                final_structure.append({
+                    "label": label_map.get(i, "Unknown"),
+                    "start": b['start'],
+                    "end": b['end'],
+                    "type": b['type']
+                })
+                
+            return final_structure
+
+        except Exception as e:
+            print(f"[LLM] Error (using Rule-Based Fallback): {e}")
+            return self._fallback_logic(blocks)
+
+    def get_song_metadata(self, song_name):
+        """
+        Asks LLM for specific structural metadata (Intro length, etc.)
+        to guide the segmentation.
+        """
+        print(f"[LLM] Fetching metadata/hints for {song_name}...")
+        
+        system_prompt = """
+        You are a Database of Indian Film Music.
+        
+        Input: Song Name.
+        
+        Goal: Provide the ESTIMATED timestamps for key events based on your training data (Popular songs).
+        
+        Output JSON:
+        {
+            "has_long_intro": boolean,
+            "estimated_vocal_start": number (seconds, approx),
+            "structure_hint": "brief description like 'Long flute intro then male vocals'"
+        }
+        
+        If you don't know the specific song, return:
+        { "has_long_intro": false, "estimated_vocal_start": 0, "structure_hint": "Unknown" }
+        """
+        
+        user_message = json.dumps({ "song_name": song_name })
+        
+        payload = {
+            "model": "gpt-4o", 
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            "temperature": 0.0
+        }
+        
+        try:
+            response = requests.post(self.api_url, headers=self.headers, json=payload, timeout=60)
+            data = response.json()
+            content = data["choices"][0]["message"]["content"]
+            
+            if "```json" in content:
+                content = content.replace("```json", "").replace("```", "")
+            elif "```" in content:
+                 content = content.replace("```", "")
+                 
+            return json.loads(content.strip())
+        except Exception as e:
+            print(f"[LLM] Metadata fetch warning: {e}")
+            return { "has_long_intro": False, "estimated_vocal_start": 0 }
+
+    def get_expected_structure(self, song_name):
+        """
+        Asks LLM for the FULL estimated structure key timestamps.
+        Used for verification comparison.
+        """
+        print(f"[LLM] Fetching expected structure for {song_name}...")
+        
+        system_prompt = """
+        You are a Database of Indian Film Music.
+        
+        Input: Song Name.
+        
+        Goal: Provide the ESTIMATED structure with timestamps based on your knowledge.
+        
+        Output: A list of segments with label, start, end.
+        
+        Output JSON:
+        [
+            { "label": "Intro", "start": 0, "end": 45 },
+            { "label": "Pallavi", "start": 45, "end": 90 },
+            { "label": "Interlude 1", "start": 90, "end": 120 }
+             ...
+        ]
+        
+        If you don't know exact timings, provide your BEST GUESS based on typical song structure for this track.
+        """
+        
+        user_message = json.dumps({ "song_name": song_name })
+        
+        payload = {
+            "model": "gpt-4o", 
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            "temperature": 0.0
+        }
+        
+        try:
+            response = requests.post(self.api_url, headers=self.headers, json=payload, timeout=60)
+            data = response.json()
+            content = data["choices"][0]["message"]["content"]
+            
+            if "```json" in content:
+                content = content.replace("```json", "").replace("```", "")
+            elif "```" in content:
+                 content = content.replace("```", "")
+                 
+            return json.loads(content.strip())
+        except Exception as e:
+            print(f"[LLM] Expected structure fetch failed: {e}")
+            return []
+
+    def _fallback_logic(self, blocks):
+        """
+        Deterministic labeling for when LLM is unavailable.
+        """
+        output = []
+        v_count = 0
+        i_count = 0
+        
+        for b in blocks:
+            label = "Unknown"
+            if b['type'] == 'vocals':
+                v_count += 1
+                if v_count == 1:
+                    label = "Pallavi"
+                else:
+                    label = f"Charanam {v_count - 1}"
+            else:
+                i_count += 1
+                label = f"Interlude {i_count}"
+            
+            output.append({
+                "label": label,
+                "start": b['start'],
+                "end": b['end']
+            })
+        return output
+
+    def generate_lyrics(self, song_name, structure):
+        """
+        Fetches lyrics for the given structure using LLM.
+        """
+        print(f"[LLM] Fetching lyrics for {song_name}...")
+        
+        section_labels = [s['label'] for s in structure if s['label'] not in ['Unknown']]
+        
+        system_prompt = """
+        You are an expert in Indian film music lyrics (Telugu/Tamil/Hindi).
+        
+        Your Goal: Provide the correct lyrics for the specified song sections.
+        
+        Input: 
+        - Song Name
+        - List of Sections (e.g. Pallavi, Charanam 1, Charanam 2)
+        
+        Output:
+        - A JSON object where keys are the SECTION NAMES and values are the LYRICS for that section.
+        - If a section is 'Interlude' or 'Instrumental', the text should be "[Instrumental]".
+        - If you don't know the lyrics, provide a best guess or empty string.
+        - Provide lyrics in the original language (e.g. Telugu) OR transliterated English, whichever is more common/readable for general users. Telugu script is preferred if requested.
+        
+        Format:
+        {
+            "Pallavi": "Line 1\nLine 2...",
+            "Charanam 1": "Line 1..."
+        }
+        """
+        
+        user_message = json.dumps({
+            "song_name": song_name,
+            "sections": section_labels
+        }, indent=2)
+        
+        payload = {
+            "model": "gpt-4o", 
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            "temperature": 0.1
+        }
+        
+        try:
+            response = requests.post(self.api_url, headers=self.headers, json=payload, timeout=60)
+            response.raise_for_status()
+            
+            data = response.json()
+            content = data["choices"][0]["message"]["content"]
+            
+            # Clean up markdown
+            if "```json" in content:
+                content = content.replace("```json", "").replace("```", "")
+            elif "```" in content:
+                 content = content.replace("```", "")
+            
+            lyrics_map = json.loads(content.strip())
+            return lyrics_map
+            
+        except Exception as e:
+            print(f"[LLM] Lyrics fetch failed: {e}")
+            if 'content' in locals():
+                print(f"[LLM] Raw Content causing error: {content}")
+            return {}

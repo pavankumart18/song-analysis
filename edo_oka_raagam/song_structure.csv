@@ -1,0 +1,11 @@
+Label,Start (s),End (s)
+Intro,0.0,2.0
+Pallavi,2.0,111.5
+Interlude 1,111.5,123.5
+Charanam 1,123.5,130.0
+Interlude 2,130.0,140.0
+Charanam 2,140.0,178.0
+Interlude 3,178.0,189.5
+Bridge,189.5,193.0
+Outro,193.0,211.5
+Charanam 3,211.5,298.58

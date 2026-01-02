@@ -1,0 +1,8 @@
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/00_Intro.mp3'
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/01_Pallavi.mp3'
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/02_Interlude_1.mp3'
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/03_Charanam_1.mp3'
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/04_Interlude_2.mp3'
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/05_Humming.mp3'
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/06_Interlude_3.mp3'
+file 'C:/Users/admin/Desktop/song analysis/my_name_is_billa/validation_slices/07_Charanam_2.mp3'
