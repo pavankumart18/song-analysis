@@ -1,0 +1,56 @@
+[
+    {
+        "label": "- Intro(Instrumental)",
+        "start": 0.0,
+        "end": 22.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "- Pallavi",
+        "start": 22.0,
+        "end": 79.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Interlude 1 ( Instrumental )",
+        "start": 79.0,
+        "end": 106.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "- Charanam 1",
+        "start": 106.0,
+        "end": 133.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Pallavi (Repeat)",
+        "start": 133.0,
+        "end": 145.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Interlude 2 ( Instrumental )",
+        "start": 145.0,
+        "end": 167.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "- Charanam 2",
+        "start": 167.0,
+        "end": 194.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Pallavi + Anupallavi (Final)",
+        "start": 194.0,
+        "end": 239.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Outro ( Instrumental )",
+        "start": 239.0,
+        "end": 263.0,
+        "type": "instrumental"
+    }
+]

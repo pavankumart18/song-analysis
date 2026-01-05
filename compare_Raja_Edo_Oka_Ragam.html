@@ -1,0 +1,277 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Raja Edo Oka Ragam - Comparison</title>
+            
+<style>
+    :root {
+        --bg: #0a0a0c;
+        --card-bg: #111;
+        --manual-bg: rgba(16, 185, 129, 0.05);
+        --demucs-bg: rgba(236, 72, 153, 0.05);
+        --sam-bg: rgba(99, 102, 241, 0.05);
+        --text: #eee;
+        --border: rgba(255,255,255,0.1);
+    }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    h1 { text-align: center; margin: 0 0 20px 0; }
+    .back-link { position: absolute; top: 20px; left: 20px; color: #fff; text-decoration: none; opacity: 0.7; }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        flex: 1;
+        min-height: 0; /* Important for scroll */
+    }
+    
+    .col {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    
+    .col-header {
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .manual-col .col-header { background: var(--manual-bg); color: #34d399; }
+    .demucs-col .col-header { background: var(--demucs-bg); color: #f472b6; }
+    .sam-col .col-header { background: var(--sam-bg); color: #818cf8; }
+    
+    .player-section {
+        padding: 15px;
+        background: rgba(0,0,0,0.2);
+        border-bottom: 1px solid var(--border);
+    }
+    audio { width: 100%; height: 32px; }
+    
+    .metrics {
+        padding: 10px 15px;
+        font-size: 0.85em;
+        color: #aaa;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .segments-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .segment {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px;
+        margin-bottom: 5px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.9em;
+    }
+    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment.active { background: #fff; color: #000; }
+    .segment.active .time { color: #333; }
+    
+    .label { font-weight: 600; }
+    .time { font-family: monospace; color: #888; font-size: 0.9em; }
+    
+    .empty-state {
+        padding: 40px;
+        text-align: center;
+        color: #555;
+        font-style: italic;
+    }
+</style>
+
+        </head>
+        <body>
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <h1>Raja Edo Oka Ragam</h1>
+            
+            <div class="grid">
+                <div class="col manual-col"><div class="col-header">Manual</div>
+        <div class="player-section">
+            <audio id="audio-manual" controls>
+                <source src="Raja_Edo_Oka_Ragam_Manual/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">9 Segments Identified</div><div class="segments-list" id="segments-manual">
+        <div class="segment" onclick="manualPlayer.playSegment(0.0, 22.0, this)">
+            <span class="label">- Intro(Instrumental)</span>
+            <span class="time">00:00 - 00:22</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(22.0, 79.0, this)">
+            <span class="label">- Pallavi</span>
+            <span class="time">00:22 - 01:19</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(79.0, 106.0, this)">
+            <span class="label">- Interlude 1 ( Instrumental )</span>
+            <span class="time">01:19 - 01:46</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(106.0, 133.0, this)">
+            <span class="label">- Charanam 1</span>
+            <span class="time">01:46 - 02:13</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(133.0, 145.0, this)">
+            <span class="label">- Pallavi (Repeat)</span>
+            <span class="time">02:13 - 02:25</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(145.0, 167.0, this)">
+            <span class="label">- Interlude 2 ( Instrumental )</span>
+            <span class="time">02:25 - 02:47</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(167.0, 194.0, this)">
+            <span class="label">- Charanam 2</span>
+            <span class="time">02:47 - 03:14</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(194.0, 239.0, this)">
+            <span class="label">- Pallavi + Anupallavi (Final)</span>
+            <span class="time">03:14 - 03:59</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(239.0, 263.0, this)">
+            <span class="label">- Outro ( Instrumental )</span>
+            <span class="time">03:59 - 04:23</span>
+        </div>
+        </div></div>
+                <div class="col demucs-col"><div class="col-header">Demucs</div>
+        <div class="player-section">
+            <audio id="audio-demucs" controls>
+                <source src="Raja_Edo_Oka_Ragam_Demucs/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">7 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 17.5, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:00 - 00:17</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(17.5, 78.5, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:17 - 01:18</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(78.5, 106.0, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">01:18 - 01:46</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(106.0, 153.5, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">01:46 - 02:33</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(153.5, 167.0, this)">
+            <span class="label">Interlude 2</span>
+            <span class="time">02:33 - 02:47</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(167.0, 241.5, this)">
+            <span class="label">Charanam 2</span>
+            <span class="time">02:47 - 04:01</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(241.5, 263.81, this)">
+            <span class="label">Outro</span>
+            <span class="time">04:01 - 04:23</span>
+        </div>
+        </div></div>
+                <div class="col sam-col"><div class="col-header">SAM</div>
+        <div class="player-section">
+            <audio id="audio-sam" controls>
+                <source src="Raja_Edo_Oka_Ragam_SAM/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">3 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 0.5, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:00 - 00:00</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(0.5, 251.5, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:00 - 04:11</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(251.5, 263.8, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">04:11 - 04:23</span>
+        </div>
+        </div></div>
+            </div>
+            
+            
+<script>
+    class ColumnPlayer {
+        constructor(id) {
+            this.id = id;
+            this.audio = document.getElementById('audio-' + id);
+            this.container = document.getElementById('segments-' + id);
+            this.currentEnd = null;
+            
+            if(this.audio) {
+                this.audio.addEventListener('timeupdate', () => this.checkTime());
+            }
+        }
+        
+        playSegment(start, end, el) {
+            if(!this.audio) return;
+            
+            this.audio.currentTime = start;
+            this.audio.play();
+            this.currentEnd = end;
+            
+            // UI
+            const segs = this.container.querySelectorAll('.segment');
+            segs.forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+        }
+        
+        checkTime() {
+            if (this.currentEnd !== null && this.audio.currentTime >= this.currentEnd) {
+                this.audio.pause();
+                this.currentEnd = null;
+                const active = this.container.querySelector('.segment.active');
+                if(active) active.classList.remove('active');
+            }
+        }
+    }
+
+    const manualPlayer = new ColumnPlayer('manual');
+    const demucsPlayer = new ColumnPlayer('demucs');
+    const samPlayer = new ColumnPlayer('sam');
+</script>
+
+        </body>
+        </html>
+        

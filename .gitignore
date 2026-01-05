@@ -1,24 +1,23 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
 venv/
 .env
 
-# Distribution / Packaging
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+# Large/Intermediate Audio Files
+*.wav
+*.flac
+**/separated/
+**/segmented_parts/
+*_reconstructed_master.mp3
 
+# SAM specific chunks (if any left in root)
+chunk_*.wav
+
+# System
+Thumbs.db
+.DS_Store
+
+# We WANT song.mp3, but ignore other mp3s if they are intermediate?
+# verify_segments produces mp3s in segmented_parts (already ignored above).
+# So song.mp3 should be safe.

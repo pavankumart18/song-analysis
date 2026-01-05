@@ -306,3 +306,57 @@ class LLMFormatter:
             if 'content' in locals():
                 print(f"[LLM] Raw Content causing error: {content}")
             return {}
+    def generate_comparison_report(self, comparison_data):
+        """
+        Generates a comparative analysis report for SAM vs Demucs.
+        data: List of objects {song, sam_structure, demucs_structure}
+        """
+        print(f"[LLM] Comparison report generation started for {len(comparison_data)} songs...")
+        
+        system_prompt = """
+        You are an expert Audio Analysis Engineer evaluating two Source Separation models:
+        1. SAM (Segment Anything Model)
+        2. Demucs (HTDemucs Hybrid Transformer)
+        
+        Your Goal: Compare their performance in identifying Song Structure (Vocals vs Instrumental).
+        
+        Input: A list of 8 songs, each with the detected structure from both models.
+        
+        Analysis Requirements:
+        - For each song, identify which model produced a more realistic structure (e.g. less noise, better alignment with expected Pallavi/Charanam).
+        - 'SAM' typically segments by visual/spectrogram masks. It might over-segment if noise is present.
+        - 'Demucs' operates on waveform stems. It is usually robust but might include breathing/humming as vocals.
+        - Look for "Hallucinations": e.g. very short vocal bursts in the middle of long instrumental sections (often false positives).
+        - Granularity: Does one model merge sections while the other splits them? Which is better?
+        
+        Output:
+        A Markdown report.
+        - Executive Summary: Overall winner and key observations.
+        - Song-by-Song Analysis: Brief paragraph for each song comparing the two.
+        - Conclusion: Recommendation for future use.
+        """
+        
+        # We process in one go or batches? Context window is large enough for 8 songs summaries.
+        # Let's verify data size. A structure might be 20 lines. 8 * 2 * 20 = 320 lines. Fits easily.
+        
+        user_message_str = json.dumps(comparison_data, indent=2)
+        
+        payload = {
+            "model": "gpt-4o", 
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message_str}
+            ],
+            "temperature": 0.2
+        }
+        
+        try:
+            response = requests.post(self.api_url, headers=self.headers, json=payload, timeout=120)
+            response.raise_for_status()
+            
+            data = response.json()
+            return data["choices"][0]["message"]["content"]
+            
+        except Exception as e:
+            print(f"[LLM] Comparison report generation failed: {e}")
+            return "## Comparison Failed\nCould not generate report due to API error."

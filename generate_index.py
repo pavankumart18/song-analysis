@@ -3,22 +3,41 @@ from pathlib import Path
 
 def generate_index():
     base_path = Path(r"c:\Users\admin\Desktop\song analysis")
-    songs = []
     
-    # Scan for directories containing song_player.html
+    # Structure: { "Song Name": { "SAM": path, "Demucs": path, "Manual": path } }
+    grouped_songs = {}
+
+    # Scan directories
     for item in base_path.iterdir():
         if item.is_dir():
             player_file = item / "song_player.html"
             if player_file.exists():
-                # Clean up folder name for display
-                display_name = item.name.replace("_", " ").title()
-                songs.append({
-                    "name": display_name,
-                    "path": f"{item.name}/song_player.html",
-                    "id": item.name
-                })
-    
-    songs.sort(key=lambda x: x["name"])
+                folder_name = item.name
+                
+                # Determine Type and Base Name
+                version_type = "Original"
+                base_name = folder_name
+                
+                if folder_name.endswith("_SAM"):
+                    version_type = "SAM"
+                    base_name = folder_name[:-4]
+                elif folder_name.endswith("_Demucs"):
+                    version_type = "Demucs"
+                    base_name = folder_name[:-7]
+                elif folder_name.endswith("_Manual"):
+                    version_type = "Manual"
+                    base_name = folder_name[:-7]
+                
+                # Normalize Title (replace underscores)
+                display_title = base_name.replace("_", " ").title()
+                
+                if display_title not in grouped_songs:
+                    grouped_songs[display_title] = {}
+                
+                grouped_songs[display_title][version_type] = f"{folder_name}/song_player.html"
+
+    # Sort songs alphabetically
+    sorted_song_names = sorted(grouped_songs.keys())
 
     html_content = f"""
 <!DOCTYPE html>
@@ -34,10 +53,13 @@ def generate_index():
         :root {{
             --bg: #0a0a0c;
             --card-bg: rgba(255, 255, 255, 0.05);
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.4);
+            --header-bg: rgba(0, 0, 0, 0.3);
             --text: #f8fafc;
             --text-dim: #94a3b8;
+            
+            --sam-color: #818cf8;
+            --demucs-color: #f472b6;
+            --manual-color: #34d399;
         }}
 
         body {{
@@ -57,7 +79,7 @@ def generate_index():
 
         header {{
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             animation: fadeInDown 0.8s ease-out;
         }}
 
@@ -77,95 +99,122 @@ def generate_index():
             margin-top: 10px;
         }}
 
-        .song-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+        .table-container {{
             width: 100%;
             max-width: 1200px;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-        }}
-
-        .song-card {{
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }}
 
-        .song-card:hover {{
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-glow);
-        }}
-
-        .song-card::before {{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.05),
-                transparent
-            );
-            transition: 0.5s;
-        }}
-
-        .song-card:hover::before {{
-            left: 100%;
-        }}
-
-        .song-name {{
-            font-size: 1.4rem;
+        .grid-header {{
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr; /* Song Name | Manual | Demucs | SAM */
+            padding: 20px 24px;
+            background: var(--header-bg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             font-weight: 600;
-            margin-bottom: 8px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }}
+
+        .grid-row {{
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            transition: background 0.2s;
+        }}
+
+        .grid-row:last-child {{
+            border-bottom: none;
+        }}
+
+        .grid-row:hover {{
+            background: rgba(255, 255, 255, 0.03);
+        }}
+
+        .song-title {{
+            font-size: 1.1rem;
+            font-weight: 600;
             color: #fff;
         }}
 
-        .status-tag {{
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            align-self: flex-start;
-        }}
-
-        .action-text {{
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: var(--accent);
+        .version-cell {{
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 600;
         }}
 
-        .action-text svg {{
-            transition: transform 0.3s ease;
+        .version-btn {{
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px; /* Fixed width for alignment */
+            text-align: center;
         }}
 
-        .song-card:hover .action-text svg {{
-            transform: translateX(4px);
+        .version-btn:hover {{
+            transform: translateY(-2px);
+        }}
+
+        /* Manual Style */
+        .btn-manual {{
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--manual-color);
+            border-color: rgba(16, 185, 129, 0.2);
+        }}
+        .btn-manual:hover {{
+            background: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }}
+
+        /* Demucs Style */
+        .btn-demucs {{
+            background: rgba(236, 72, 153, 0.1);
+            color: var(--demucs-color);
+            border-color: rgba(236, 72, 153, 0.2);
+        }}
+        .btn-demucs:hover {{
+            background: rgba(236, 72, 153, 0.2);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
+        }}
+
+        /* SAM Style */
+        .btn-sam {{
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--sam-color);
+            border-color: rgba(99, 102, 241, 0.2);
+        }}
+        .btn-sam:hover {{
+            background: rgba(99, 102, 241, 0.2);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }}
+        
+        .btn-disabled {{
+            opacity: 0.1;
+            cursor: default;
+            filter: grayscale(1);
+            border: 1px solid rgba(255,255,255,0.05);
+            background: transparent;
+            color: var(--text-dim);
+        }}
+        .btn-disabled:hover {{
+            transform: none;
+            box-shadow: none;
+            background: transparent;
         }}
 
         @keyframes fadeInDown {{
@@ -177,38 +226,50 @@ def generate_index():
             from {{ opacity: 0; transform: translateY(20px); }}
             to {{ opacity: 1; transform: translateY(0); }}
         }}
-
-        /* Responsive Grid Adjustments */
-        @media (max-width: 640px) {{
-            h1 {{ font-size: 2rem; }}
-            .song-grid {{ grid-template-columns: 1fr; }}
+        
+        @media (max-width: 768px) {{
+            .grid-header {{ display: none; }}
+            .grid-row {{
+                grid-template-columns: 1fr;
+                gap: 12px;
+                text-align: center;
+            }}
+            .version-cell {{ justify-content: center; }}
         }}
     </style>
 </head>
 <body>
     <header>
         <h1>Indian Music Intel</h1>
-        <p class="subtitle">Premium Audio Segmentation & Lyric Analysis Dashboard</p>
+        <p class="subtitle">Comparison Dashboard: Manual vs Demucs vs SAM</p>
     </header>
 
-    <div class="song-grid">
+    <div class="table-container">
+        <div class="grid-header">
+            <div>Song Title</div>
+            <div>Manual</div>
+            <div>Demucs</div>
+            <div>SAM</div>
+        </div>
 """
-    
-    for song in songs:
+
+    for name in sorted_song_names:
+        versions = grouped_songs[name]
+        
+        # Helper to generate button or placeholder
+        def get_btn(v_type, css_class, label):
+            if v_type in versions:
+                return f'<a href="{versions[v_type]}" class="version-btn {css_class}">{label}</a>'
+            else:
+                 return f'<span class="version-btn {css_class} btn-disabled">N/A</span>'
+
         html_content += f"""
-        <a href="{song['path']}" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">{song['name']}</div>
-            </div>
-            <div class="action-text">
-                Browse Structure 
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
-        </a>
+        <div class="grid-row">
+            <div class="song-title">{name}</div>
+            <div class="version-cell">{get_btn("Manual", "btn-manual", "Open Analysis")}</div>
+            <div class="version-cell">{get_btn("Demucs", "btn-demucs", "Open Analysis")}</div>
+            <div class="version-cell">{get_btn("SAM", "btn-sam", "Open Analysis")}</div>
+        </div>
 """
 
     html_content += """

@@ -1,359 +1,109 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Music Analysis Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Indian Music Intel</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0a0a0c;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.4);
-            --text: #f8fafc;
-            --text-dim: #94a3b8;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 600;
-            margin: 0;
-            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        p.subtitle {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-
-        .song-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            width: 100%;
-            max-width: 1200px;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
-
+        body { background: #0a0a0c; color: #eee; font-family: 'Outfit', sans-serif; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        h1 { margin-bottom: 40px; font-weight: 300; letter-spacing: 1px; }
+        .list { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
         .song-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; text-decoration: none; color: inherit;
+            display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.2s;
         }
-
-        .song-card:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-glow);
-        }
-
-        .song-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.05),
-                    transparent);
-            transition: 0.5s;
-        }
-
-        .song-card:hover::before {
-            left: 100%;
-        }
-
-        .song-name {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-
-        .status-tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            align-self: flex-start;
-        }
-
-        .action-text {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-
-        .action-text svg {
-            transition: transform 0.3s ease;
-        }
-
-        .song-card:hover .action-text svg {
-            transform: translateX(4px);
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive Grid Adjustments */
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .song-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .song-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); borderColor: #6366f1; }
+        .song-name { font-size: 1.2em; font-weight: 600; margin-bottom: 5px; }
+        .tags { display: flex; }
+        .arrow { opacity: 0.5; }
     </style>
 </head>
-
 <body>
-    <header>
-        <h1>Indian Music Segmentation</h1>
-    </header>
-
-    <div class="song-grid">
-
-        <a href="aakasham_digivachi/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Aakasham Digivachi</div>
+    <h1>Song Analysis Dashboard</h1>
+    <div class="list">
+        
+        <a href="compare_Ghallu_Ghallu.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Ghallu Ghallu</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="cheppave_chirugali/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Cheppave Chirugali</div>
+        
+        <a href="compare_Mari_Antaga_Svsc_Movie.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Mari Antaga Svsc Movie</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="devuda_devuda/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Devuda Devuda</div>
+        
+        <a href="compare_Naa_Autograph_Sweet_Memories.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Naa Autograph Sweet Memories</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="dheeradheera/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Dheeradheera</div>
+        
+        <a href="compare_Narasimha_-_Narasimha.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Narasimha - Narasimha</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="edo_oka_raagam/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Edo Oka Raagam</div>
+        
+        <a href="compare_Narasimha_Yekku_Tholi_Mettu.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Narasimha Yekku Tholi Mettu</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="gummadi_gummadi/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Gummadi Gummadi</div>
+        
+        <a href="compare_Nuvvostanante_Nenoddantana_S.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Nuvvostanante Nenoddantana S</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="manava_manava/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Manava Manava</div>
+        
+        <a href="compare_Oh_Sita_Hey_Rama.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Oh Sita Hey Rama</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="my_name_is_billa/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">My Name Is Billa</div>
+        
+        <a href="compare_Pilichina_Ranantava_Song_With.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Pilichina Ranantava Song With</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="neeve/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Neeve</div>
+        
+        <a href="compare_Raja_Edo_Oka_Ragam.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Raja Edo Oka Ragam</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="netho_cheppana/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Netho Cheppana</div>
+        
+        <a href="compare_Robo.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Robo</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
+            <div class="arrow">→</div>
         </a>
-
-        <a href="priyatama/song_player.html" class="song-card">
-            <div>
-                <div class="status-tag">Ready</div>
-                <div class="song-name">Priyatama</div>
-            </div>
-            <div class="action-text">
-                Browse Structure
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
-        </a>
-
+        
     </div>
 </body>
-
 </html>
+    

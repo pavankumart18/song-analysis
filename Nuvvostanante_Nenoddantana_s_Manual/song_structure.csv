@@ -1,0 +1,14 @@
+start,end,label,type
+0.0,12.0,Intro ( Instrumental ),instrumental
+12.0,49.0,Pallavi,vocals
+49.0,58.0,Pallavi (Repeat),vocals
+58.0,83.0,Folk Chorus,vocals
+83.0,94.0,Spoken Interlude,instrumental
+94.0,112.0,Charanam 1,vocals
+112.0,154.0,Interlude 1 ( Instrumental + Humming ),vocals
+154.0,170.0,Charanam 2,vocals
+170.0,186.0,Charanam 3,vocals
+186.0,204.0,Interlude 2,instrumental
+204.0,221.0,Charanam 4,vocals
+221.0,237.0,Charanam 5,vocals
+237.0,247.0,Interlude 3 (Instrumental),instrumental

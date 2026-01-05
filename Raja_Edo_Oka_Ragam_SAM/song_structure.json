@@ -1,0 +1,20 @@
+[
+  {
+    "label": "Intro",
+    "start": 0.0,
+    "end": 0.5,
+    "type": "instrumental"
+  },
+  {
+    "label": "Pallavi",
+    "start": 0.5,
+    "end": 251.5,
+    "type": "vocals"
+  },
+  {
+    "label": "Interlude 1",
+    "start": 251.5,
+    "end": 263.8,
+    "type": "instrumental"
+  }
+]

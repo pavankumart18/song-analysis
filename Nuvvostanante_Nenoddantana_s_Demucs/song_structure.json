@@ -1,0 +1,38 @@
+[
+  {
+    "label": "Intro",
+    "start": 0.0,
+    "end": 2.0,
+    "type": "instrumental"
+  },
+  {
+    "label": "Intro Humming",
+    "start": 2.0,
+    "end": 4.5,
+    "type": "vocals"
+  },
+  {
+    "label": "Intro",
+    "start": 4.5,
+    "end": 13.0,
+    "type": "instrumental"
+  },
+  {
+    "label": "Pallavi",
+    "start": 13.0,
+    "end": 113.0,
+    "type": "vocals"
+  },
+  {
+    "label": "Interlude 1",
+    "start": 113.0,
+    "end": 128.5,
+    "type": "instrumental"
+  },
+  {
+    "label": "Charanam 1",
+    "start": 128.5,
+    "end": 247.93,
+    "type": "vocals"
+  }
+]

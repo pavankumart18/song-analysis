@@ -1,0 +1,272 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Narasimha Yekku Tholi Mettu - Comparison</title>
+            
+<style>
+    :root {
+        --bg: #0a0a0c;
+        --card-bg: #111;
+        --manual-bg: rgba(16, 185, 129, 0.05);
+        --demucs-bg: rgba(236, 72, 153, 0.05);
+        --sam-bg: rgba(99, 102, 241, 0.05);
+        --text: #eee;
+        --border: rgba(255,255,255,0.1);
+    }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    h1 { text-align: center; margin: 0 0 20px 0; }
+    .back-link { position: absolute; top: 20px; left: 20px; color: #fff; text-decoration: none; opacity: 0.7; }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        flex: 1;
+        min-height: 0; /* Important for scroll */
+    }
+    
+    .col {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    
+    .col-header {
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .manual-col .col-header { background: var(--manual-bg); color: #34d399; }
+    .demucs-col .col-header { background: var(--demucs-bg); color: #f472b6; }
+    .sam-col .col-header { background: var(--sam-bg); color: #818cf8; }
+    
+    .player-section {
+        padding: 15px;
+        background: rgba(0,0,0,0.2);
+        border-bottom: 1px solid var(--border);
+    }
+    audio { width: 100%; height: 32px; }
+    
+    .metrics {
+        padding: 10px 15px;
+        font-size: 0.85em;
+        color: #aaa;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .segments-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .segment {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px;
+        margin-bottom: 5px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.9em;
+    }
+    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment.active { background: #fff; color: #000; }
+    .segment.active .time { color: #333; }
+    
+    .label { font-weight: 600; }
+    .time { font-family: monospace; color: #888; font-size: 0.9em; }
+    
+    .empty-state {
+        padding: 40px;
+        text-align: center;
+        color: #555;
+        font-style: italic;
+    }
+</style>
+
+        </head>
+        <body>
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <h1>Narasimha Yekku Tholi Mettu</h1>
+            
+            <div class="grid">
+                <div class="col manual-col"><div class="col-header">Manual</div>
+        <div class="player-section">
+            <audio id="audio-manual" controls>
+                <source src="Narasimha_Yekku_Tholi_Mettu_Manual/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">11 Segments Identified</div><div class="segments-list" id="segments-manual">
+        <div class="segment" onclick="manualPlayer.playSegment(0.0, 11.0, this)">
+            <span class="label">humming</span>
+            <span class="time">00:00 - 00:11</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(11.0, 25.0, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:11 - 00:25</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(25.0, 55.0, this)">
+            <span class="label">charanam 1</span>
+            <span class="time">00:25 - 00:55</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(55.0, 69.0, this)">
+            <span class="label">charanam 2</span>
+            <span class="time">00:55 - 01:09</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(69.0, 85.0, this)">
+            <span class="label">charanam 3</span>
+            <span class="time">01:09 - 01:25</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(85.0, 99.0, this)">
+            <span class="label">Pallavi (Repeat)</span>
+            <span class="time">01:25 - 01:39</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(99.0, 129.0, this)">
+            <span class="label">Interlude 1 ( Instrumental )</span>
+            <span class="time">01:39 - 02:09</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(129.0, 162.0, this)">
+            <span class="label">charanam 4</span>
+            <span class="time">02:09 - 02:42</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(162.0, 176.0, this)">
+            <span class="label">charanam 5</span>
+            <span class="time">02:42 - 02:56</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(176.0, 220.0, this)">
+            <span class="label">charanam 6</span>
+            <span class="time">02:56 - 03:40</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(220.0, 268.0, this)">
+            <span class="label">Outro ( Instrumental )</span>
+            <span class="time">03:40 - 04:28</span>
+        </div>
+        </div></div>
+                <div class="col demucs-col"><div class="col-header">Demucs</div>
+        <div class="player-section">
+            <audio id="audio-demucs" controls>
+                <source src="Narasimha_Yekku_Tholi_Mettu_Demucs/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">5 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 4.0, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:00 - 00:04</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(4.0, 100.5, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:04 - 01:40</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(100.5, 130.0, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">01:40 - 02:10</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(130.0, 221.5, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">02:10 - 03:41</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(221.5, 268.12, this)">
+            <span class="label">Outro</span>
+            <span class="time">03:41 - 04:28</span>
+        </div>
+        </div></div>
+                <div class="col sam-col"><div class="col-header">SAM</div>
+        <div class="player-section">
+            <audio id="audio-sam" controls>
+                <source src="Narasimha_Yekku_Tholi_Mettu_SAM/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">2 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 4.0, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:00 - 00:04</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(4.0, 268.12, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:04 - 04:28</span>
+        </div>
+        </div></div>
+            </div>
+            
+            
+<script>
+    class ColumnPlayer {
+        constructor(id) {
+            this.id = id;
+            this.audio = document.getElementById('audio-' + id);
+            this.container = document.getElementById('segments-' + id);
+            this.currentEnd = null;
+            
+            if(this.audio) {
+                this.audio.addEventListener('timeupdate', () => this.checkTime());
+            }
+        }
+        
+        playSegment(start, end, el) {
+            if(!this.audio) return;
+            
+            this.audio.currentTime = start;
+            this.audio.play();
+            this.currentEnd = end;
+            
+            // UI
+            const segs = this.container.querySelectorAll('.segment');
+            segs.forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+        }
+        
+        checkTime() {
+            if (this.currentEnd !== null && this.audio.currentTime >= this.currentEnd) {
+                this.audio.pause();
+                this.currentEnd = null;
+                const active = this.container.querySelector('.segment.active');
+                if(active) active.classList.remove('active');
+            }
+        }
+    }
+
+    const manualPlayer = new ColumnPlayer('manual');
+    const demucsPlayer = new ColumnPlayer('demucs');
+    const samPlayer = new ColumnPlayer('sam');
+</script>
+
+        </body>
+        </html>
+        

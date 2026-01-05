@@ -1,0 +1,80 @@
+[
+    {
+        "label": "- Intro",
+        "start": 0.0,
+        "end": 38.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "- Hook",
+        "start": 38.0,
+        "end": 58.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Pallavi",
+        "start": 59.0,
+        "end": 76.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Chorus / Refrain",
+        "start": 76.0,
+        "end": 96.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Interlude 1",
+        "start": 96.0,
+        "end": 102.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "- Hook",
+        "start": 102.0,
+        "end": 115.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Interlude 2",
+        "start": 115.0,
+        "end": 141.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "- Charanam 1",
+        "start": 141.0,
+        "end": 180.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Chorus / Refrain",
+        "start": 180.0,
+        "end": 192.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Hook",
+        "start": 192.0,
+        "end": 208.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Interlude 3",
+        "start": 208.0,
+        "end": 241.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "- Charanam 2",
+        "start": 241.0,
+        "end": 278.0,
+        "type": "vocals"
+    },
+    {
+        "label": "- Hook",
+        "start": 278.0,
+        "end": 316.0,
+        "type": "vocals"
+    }
+]

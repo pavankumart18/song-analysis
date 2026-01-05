@@ -1,0 +1,282 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Mari Antaga Svsc Movie - Comparison</title>
+            
+<style>
+    :root {
+        --bg: #0a0a0c;
+        --card-bg: #111;
+        --manual-bg: rgba(16, 185, 129, 0.05);
+        --demucs-bg: rgba(236, 72, 153, 0.05);
+        --sam-bg: rgba(99, 102, 241, 0.05);
+        --text: #eee;
+        --border: rgba(255,255,255,0.1);
+    }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    h1 { text-align: center; margin: 0 0 20px 0; }
+    .back-link { position: absolute; top: 20px; left: 20px; color: #fff; text-decoration: none; opacity: 0.7; }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        flex: 1;
+        min-height: 0; /* Important for scroll */
+    }
+    
+    .col {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    
+    .col-header {
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .manual-col .col-header { background: var(--manual-bg); color: #34d399; }
+    .demucs-col .col-header { background: var(--demucs-bg); color: #f472b6; }
+    .sam-col .col-header { background: var(--sam-bg); color: #818cf8; }
+    
+    .player-section {
+        padding: 15px;
+        background: rgba(0,0,0,0.2);
+        border-bottom: 1px solid var(--border);
+    }
+    audio { width: 100%; height: 32px; }
+    
+    .metrics {
+        padding: 10px 15px;
+        font-size: 0.85em;
+        color: #aaa;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .segments-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .segment {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px;
+        margin-bottom: 5px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.9em;
+    }
+    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment.active { background: #fff; color: #000; }
+    .segment.active .time { color: #333; }
+    
+    .label { font-weight: 600; }
+    .time { font-family: monospace; color: #888; font-size: 0.9em; }
+    
+    .empty-state {
+        padding: 40px;
+        text-align: center;
+        color: #555;
+        font-style: italic;
+    }
+</style>
+
+        </head>
+        <body>
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <h1>Mari Antaga Svsc Movie</h1>
+            
+            <div class="grid">
+                <div class="col manual-col"><div class="col-header">Manual</div>
+        <div class="player-section">
+            <audio id="audio-manual" controls>
+                <source src="Mari_Antaga_SVSC_Movie_Manual/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">9 Segments Identified</div><div class="segments-list" id="segments-manual">
+        <div class="segment" onclick="manualPlayer.playSegment(0.0, 8.0, this)">
+            <span class="label">Intro ( Instrumental )</span>
+            <span class="time">00:00 - 00:08</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(8.0, 23.0, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:08 - 00:23</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(23.0, 56.0, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">00:23 - 00:56</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(56.0, 65.0, this)">
+            <span class="label">Pallavi ( Repeat )</span>
+            <span class="time">00:56 - 01:05</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(65.0, 81.0, this)">
+            <span class="label">Interlude 1 ( Instrumental )</span>
+            <span class="time">01:05 - 01:21</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(81.0, 131.0, this)">
+            <span class="label">Charanam 2</span>
+            <span class="time">01:21 - 02:11</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(131.0, 160.0, this)">
+            <span class="label">Interlude 2 ( Instrumental )</span>
+            <span class="time">02:11 - 02:40</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(160.0, 208.0, this)">
+            <span class="label">Charanam 3</span>
+            <span class="time">02:40 - 03:28</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(208.0, 226.0, this)">
+            <span class="label">Outro ( Instrumental )</span>
+            <span class="time">03:28 - 03:46</span>
+        </div>
+        </div></div>
+                <div class="col demucs-col"><div class="col-header">Demucs</div>
+        <div class="player-section">
+            <audio id="audio-demucs" controls>
+                <source src="Mari_Antaga_SVSC_Movie_Demucs/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">7 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 65.5, this)">
+            <span class="label">Intro Humming</span>
+            <span class="time">00:00 - 01:05</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(65.5, 82.5, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">01:05 - 01:22</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(82.5, 132.0, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">01:22 - 02:12</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(132.0, 160.5, this)">
+            <span class="label">Interlude 2</span>
+            <span class="time">02:12 - 02:40</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(160.5, 210.0, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">02:40 - 03:30</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(210.0, 226.5, this)">
+            <span class="label">Interlude 3</span>
+            <span class="time">03:30 - 03:46</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(226.5, 241.48, this)">
+            <span class="label">Charanam 2</span>
+            <span class="time">03:46 - 04:01</span>
+        </div>
+        </div></div>
+                <div class="col sam-col"><div class="col-header">SAM</div>
+        <div class="player-section">
+            <audio id="audio-sam" controls>
+                <source src="Mari_Antaga_SVSC_Movie_SAM/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">4 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 8.0, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:00 - 00:08</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(8.0, 65.5, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:08 - 01:05</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(65.5, 82.5, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">01:05 - 01:22</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(82.5, 241.48, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">01:22 - 04:01</span>
+        </div>
+        </div></div>
+            </div>
+            
+            
+<script>
+    class ColumnPlayer {
+        constructor(id) {
+            this.id = id;
+            this.audio = document.getElementById('audio-' + id);
+            this.container = document.getElementById('segments-' + id);
+            this.currentEnd = null;
+            
+            if(this.audio) {
+                this.audio.addEventListener('timeupdate', () => this.checkTime());
+            }
+        }
+        
+        playSegment(start, end, el) {
+            if(!this.audio) return;
+            
+            this.audio.currentTime = start;
+            this.audio.play();
+            this.currentEnd = end;
+            
+            // UI
+            const segs = this.container.querySelectorAll('.segment');
+            segs.forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+        }
+        
+        checkTime() {
+            if (this.currentEnd !== null && this.audio.currentTime >= this.currentEnd) {
+                this.audio.pause();
+                this.currentEnd = null;
+                const active = this.container.querySelector('.segment.active');
+                if(active) active.classList.remove('active');
+            }
+        }
+    }
+
+    const manualPlayer = new ColumnPlayer('manual');
+    const demucsPlayer = new ColumnPlayer('demucs');
+    const samPlayer = new ColumnPlayer('sam');
+</script>
+
+        </body>
+        </html>
+        

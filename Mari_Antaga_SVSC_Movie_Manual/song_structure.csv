@@ -1,0 +1,10 @@
+start,end,label,type
+0.0,8.0,Intro ( Instrumental ),instrumental
+8.0,23.0,Pallavi,vocals
+23.0,56.0,Charanam 1,vocals
+56.0,65.0,Pallavi ( Repeat ),vocals
+65.0,81.0,Interlude 1 ( Instrumental ),instrumental
+81.0,131.0,Charanam 2,vocals
+131.0,160.0,Interlude 2 ( Instrumental ),instrumental
+160.0,208.0,Charanam 3,vocals
+208.0,226.0,Outro ( Instrumental ),instrumental

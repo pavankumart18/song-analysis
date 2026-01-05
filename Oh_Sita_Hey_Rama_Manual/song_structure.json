@@ -1,0 +1,50 @@
+[
+    {
+        "label": "Intro (Instrumental)",
+        "start": 0.0,
+        "end": 17.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Pallavi",
+        "start": 17.0,
+        "end": 45.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Anupallavi",
+        "start": 45.0,
+        "end": 73.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Pallavi (Repeat)",
+        "start": 73.0,
+        "end": 86.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Interlude 1 ( Human Chorus )",
+        "start": 86.0,
+        "end": 98.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Interlude 2 ( Instrumental )",
+        "start": 98.0,
+        "end": 127.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Charanam 1",
+        "start": 127.0,
+        "end": 161.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Interlude 3 ( Instrumental ))",
+        "start": 161.0,
+        "end": 220.0,
+        "type": "instrumental"
+    }
+]

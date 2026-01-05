@@ -1,0 +1,68 @@
+[
+    {
+        "label": "Intro ( Instrumental )",
+        "start": 0.0,
+        "end": 19.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Pallavi",
+        "start": 19.0,
+        "end": 76.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Chorus / Refrain",
+        "start": 76.0,
+        "end": 95.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Interlude 1 ( Instrumental )",
+        "start": 95.0,
+        "end": 123.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Interlude 2 ( Human Chorus )",
+        "start": 123.0,
+        "end": 142.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Charanam 1",
+        "start": 142.0,
+        "end": 190.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Interlude 3 ( Instrumental )",
+        "start": 190.0,
+        "end": 195.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Pallavi (Repeat)",
+        "start": 195.0,
+        "end": 208.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Interlude 4 ( Human Chorus )",
+        "start": 208.0,
+        "end": 238.0,
+        "type": "instrumental"
+    },
+    {
+        "label": "Charanam 2",
+        "start": 238.0,
+        "end": 285.0,
+        "type": "vocals"
+    },
+    {
+        "label": "Outro / Folk Chant",
+        "start": 285.0,
+        "end": 317.0,
+        "type": "instrumental"
+    }
+]

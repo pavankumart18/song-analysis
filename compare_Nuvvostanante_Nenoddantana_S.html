@@ -1,0 +1,307 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Nuvvostanante Nenoddantana S - Comparison</title>
+            
+<style>
+    :root {
+        --bg: #0a0a0c;
+        --card-bg: #111;
+        --manual-bg: rgba(16, 185, 129, 0.05);
+        --demucs-bg: rgba(236, 72, 153, 0.05);
+        --sam-bg: rgba(99, 102, 241, 0.05);
+        --text: #eee;
+        --border: rgba(255,255,255,0.1);
+    }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    h1 { text-align: center; margin: 0 0 20px 0; }
+    .back-link { position: absolute; top: 20px; left: 20px; color: #fff; text-decoration: none; opacity: 0.7; }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        flex: 1;
+        min-height: 0; /* Important for scroll */
+    }
+    
+    .col {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    
+    .col-header {
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .manual-col .col-header { background: var(--manual-bg); color: #34d399; }
+    .demucs-col .col-header { background: var(--demucs-bg); color: #f472b6; }
+    .sam-col .col-header { background: var(--sam-bg); color: #818cf8; }
+    
+    .player-section {
+        padding: 15px;
+        background: rgba(0,0,0,0.2);
+        border-bottom: 1px solid var(--border);
+    }
+    audio { width: 100%; height: 32px; }
+    
+    .metrics {
+        padding: 10px 15px;
+        font-size: 0.85em;
+        color: #aaa;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .segments-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .segment {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px;
+        margin-bottom: 5px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.9em;
+    }
+    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment.active { background: #fff; color: #000; }
+    .segment.active .time { color: #333; }
+    
+    .label { font-weight: 600; }
+    .time { font-family: monospace; color: #888; font-size: 0.9em; }
+    
+    .empty-state {
+        padding: 40px;
+        text-align: center;
+        color: #555;
+        font-style: italic;
+    }
+</style>
+
+        </head>
+        <body>
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <h1>Nuvvostanante Nenoddantana S</h1>
+            
+            <div class="grid">
+                <div class="col manual-col"><div class="col-header">Manual</div>
+        <div class="player-section">
+            <audio id="audio-manual" controls>
+                <source src="Nuvvostanante_Nenoddantana_s_Manual/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">13 Segments Identified</div><div class="segments-list" id="segments-manual">
+        <div class="segment" onclick="manualPlayer.playSegment(0.0, 12.0, this)">
+            <span class="label">Intro ( Instrumental )</span>
+            <span class="time">00:00 - 00:12</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(12.0, 49.0, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:12 - 00:49</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(49.0, 58.0, this)">
+            <span class="label">Pallavi (Repeat)</span>
+            <span class="time">00:49 - 00:58</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(58.0, 83.0, this)">
+            <span class="label">Folk Chorus</span>
+            <span class="time">00:58 - 01:23</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(83.0, 94.0, this)">
+            <span class="label">Spoken Interlude</span>
+            <span class="time">01:23 - 01:34</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(94.0, 112.0, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">01:34 - 01:52</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(112.0, 154.0, this)">
+            <span class="label">Interlude 1 ( Instrumental + Humming )</span>
+            <span class="time">01:52 - 02:34</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(154.0, 170.0, this)">
+            <span class="label">Charanam 2</span>
+            <span class="time">02:34 - 02:50</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(170.0, 186.0, this)">
+            <span class="label">Charanam 3</span>
+            <span class="time">02:50 - 03:06</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(186.0, 204.0, this)">
+            <span class="label">Interlude 2</span>
+            <span class="time">03:06 - 03:24</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(204.0, 221.0, this)">
+            <span class="label">Charanam 4</span>
+            <span class="time">03:24 - 03:41</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(221.0, 237.0, this)">
+            <span class="label">Charanam 5</span>
+            <span class="time">03:41 - 03:57</span>
+        </div>
+        
+        <div class="segment" onclick="manualPlayer.playSegment(237.0, 247.0, this)">
+            <span class="label">Interlude 3 (Instrumental)</span>
+            <span class="time">03:57 - 04:07</span>
+        </div>
+        </div></div>
+                <div class="col demucs-col"><div class="col-header">Demucs</div>
+        <div class="player-section">
+            <audio id="audio-demucs" controls>
+                <source src="Nuvvostanante_Nenoddantana_s_Demucs/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 2.0, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:00 - 00:02</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(2.0, 4.5, this)">
+            <span class="label">Intro Humming</span>
+            <span class="time">00:02 - 00:04</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(4.5, 13.0, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:04 - 00:13</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(13.0, 113.0, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:13 - 01:53</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(113.0, 128.5, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">01:53 - 02:08</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(128.5, 247.93, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">02:08 - 04:07</span>
+        </div>
+        </div></div>
+                <div class="col sam-col"><div class="col-header">SAM</div>
+        <div class="player-section">
+            <audio id="audio-sam" controls>
+                <source src="Nuvvostanante_Nenoddantana_s_SAM/song.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 2.0, this)">
+            <span class="label">Intro</span>
+            <span class="time">00:00 - 00:02</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(2.0, 4.5, this)">
+            <span class="label">Intro Humming</span>
+            <span class="time">00:02 - 00:04</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(4.5, 13.0, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">00:04 - 00:13</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(13.0, 195.0, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">00:13 - 03:15</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(195.0, 204.5, this)">
+            <span class="label">Interlude 2</span>
+            <span class="time">03:15 - 03:24</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(204.5, 247.92, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">03:24 - 04:07</span>
+        </div>
+        </div></div>
+            </div>
+            
+            
+<script>
+    class ColumnPlayer {
+        constructor(id) {
+            this.id = id;
+            this.audio = document.getElementById('audio-' + id);
+            this.container = document.getElementById('segments-' + id);
+            this.currentEnd = null;
+            
+            if(this.audio) {
+                this.audio.addEventListener('timeupdate', () => this.checkTime());
+            }
+        }
+        
+        playSegment(start, end, el) {
+            if(!this.audio) return;
+            
+            this.audio.currentTime = start;
+            this.audio.play();
+            this.currentEnd = end;
+            
+            // UI
+            const segs = this.container.querySelectorAll('.segment');
+            segs.forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+        }
+        
+        checkTime() {
+            if (this.currentEnd !== null && this.audio.currentTime >= this.currentEnd) {
+                this.audio.pause();
+                this.currentEnd = null;
+                const active = this.container.querySelector('.segment.active');
+                if(active) active.classList.remove('active');
+            }
+        }
+    }
+
+    const manualPlayer = new ColumnPlayer('manual');
+    const demucsPlayer = new ColumnPlayer('demucs');
+    const samPlayer = new ColumnPlayer('sam');
+</script>
+
+        </body>
+        </html>
+        
