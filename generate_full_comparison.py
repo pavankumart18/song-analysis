@@ -57,9 +57,12 @@ CSS = """
     
     .player-section {
         padding: 15px;
-        background: rgba(0,0,0,0.2);
         border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
+    .player-label { font-size: 0.8em; color: #888; margin-bottom: 4px; display: block; }
     audio { width: 100%; height: 32px; }
     
     .metrics {
@@ -87,8 +90,9 @@ CSS = """
         cursor: pointer;
         transition: background 0.2s;
         font-size: 0.9em;
+        border: 1px solid transparent;
     }
-    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
     .segment.active { background: #fff; color: #000; }
     .segment.active .time { color: #333; }
     
@@ -168,20 +172,56 @@ def render_column(version_name, class_name, folder_path, base_path):
 
     folder = Path(folder_path)
     
-    # Check for audio
-    # Usually song.mp3 or visuals/vocals.wav depending on what we want to play.
-    # The user wants to listen to the song or stems. The existing players played 'song.mp3' or 'vocals.wav'.
-    # In manual folders we copied 'song.mp3'. In Demucs/SAM folders we have 'song.mp3'.
-    # For splitting, we rely on song.mp3 usually.
-    audio_file = folder / "song.mp3"
-    audio_rel = ""
-    if audio_file.exists():
-        audio_rel = f"{folder.name}/song.mp3"
-    else:
-        # Fallback to separated/htdemucs/song/vocals.mp3 if song.mp3 missing?
-        # Let's try to find *any* audio.
-        # But logically, song.mp3 should be there.
+    # 1. Main Analysis Audio (Vocals usually, for manual checking segments)
+    # The existing player logic uses playSegment(), which expects one "Main" audio.
+    # For Manual: song.mp3 (Full song)
+    # For Demucs/SAM: They also have song.mp3 (Full song)
+    # BUT, the user wants "Raw Outputs" (Separated Stems) visible.
+    
+    # Let's find the stems!
+    # Common path: separated/htdemucs/song/vocals.mp3 or separated/sam/song/vocals.wav
+    
+    vocals_rel = ""
+    novocals_rel = ""
+    
+    # Search for stems
+    for root, dirs, files in folder.walk(): # walk is 3.12+, let's use rglob
         pass
+    
+    # Simplified search:
+    # Look for 'separated' dir
+    sep_dir = folder / "separated"
+    if sep_dir.exists():
+        # Demucs: separated/htdemucs/song/vocals.mp3
+        # SAM: separated/sam/song/vocals.wav
+        
+        # Try finding vocals.*
+        voc_candidates = list(sep_dir.rglob("vocals.*"))
+        novoc_candidates = list(sep_dir.rglob("no_vocals.*"))
+        
+        if voc_candidates:
+            # relative path from the song folder, OR relative from base_path?
+            # The HTML is in base_path (Desktop/song analysis).
+            # So unique path is folder / ...
+            # We need path relative to base_path (where HTML is).
+            
+            # voc_candidates[0] is absolute.
+            # We need rel path: "ghallu_ghallu_Demucs/separated/..."
+            try:
+                vocals_rel = voc_candidates[0].relative_to(base_path)
+            except: pass
+            
+        if novoc_candidates:
+            try:
+                novocals_rel = novoc_candidates[0].relative_to(base_path)
+            except: pass
+    
+    # Main Audio for Segment Clicking
+    # Default to song.mp3
+    main_audio_rel = ""
+    song_mp3 = folder / "song.mp3"
+    if song_mp3.exists():
+         main_audio_rel = f"{folder.name}/song.mp3"
 
     # Read Structure
     structure_file = folder / "song_structure.json"
@@ -193,22 +233,51 @@ def render_column(version_name, class_name, folder_path, base_path):
         except:
             pass
 
-    # 1. Player Section
-    if audio_rel:
+    # --- HTML RENDER ---
+    html += '<div class="player-section">'
+    
+    # 1. Main Player (For Segments)
+    if main_audio_rel:
         html += f"""
-        <div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-{col_id}" controls>
-                <source src="{audio_rel}" type="audio/mpeg">
+                <source src="{main_audio_rel}" type="audio/mpeg">
             </audio>
         </div>
         """
     else:
-        html += '<div class="player-section" style="color:#f44">Audio Missing</div>'
+        html += '<div style="color:#f44">Full Audio Missing</div>'
+        
+    # 2. Raw Stems (If available)
+    if vocals_rel:
+        html += f"""
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="{vocals_rel}" type="audio/mpeg">
+                <source src="{vocals_rel}" type="audio/wav">
+            </audio>
+        </div>
+        """
+        
+    if novocals_rel:
+        html += f"""
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="{novocals_rel}" type="audio/mpeg">
+                <source src="{novocals_rel}" type="audio/wav">
+            </audio>
+        </div>
+        """
+        
+    html += '</div>' # End player section
 
-    # 2. Metrics (Count)
+    # 3. Metrics (Count)
     html += f'<div class="metrics">{len(structure)} Segments Identified</div>'
 
-    # 3. Segments List
+    # 4. Segments List
     html += f'<div class="segments-list" id="segments-{col_id}">'
     for seg in structure:
         start = seg.get('start', 0)
@@ -253,10 +322,6 @@ def generate_comparison_pages():
                 variant = "SAM"
                 title_key = name[:-4]
             else:
-                # Might be other folders or originals without suffix? 
-                # Assuming our pipeline is consistent with suffixes now.
-                # If pure song folder, ignore or treat as raw?
-                # User specifically asked for comparison of these 3.
                 continue
                 
             display_title = title_key.replace("_", " ").title()

@@ -60,9 +60,12 @@
     
     .player-section {
         padding: 15px;
-        background: rgba(0,0,0,0.2);
         border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
+    .player-label { font-size: 0.8em; color: #888; margin-bottom: 4px; display: block; }
     audio { width: 100%; height: 32px; }
     
     .metrics {
@@ -90,8 +93,9 @@
         cursor: pointer;
         transition: background 0.2s;
         font-size: 0.9em;
+        border: 1px solid transparent;
     }
-    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
     .segment.active { background: #fff; color: #000; }
     .segment.active .time { color: #333; }
     
@@ -112,13 +116,14 @@
             <h1>Narasimha Yekku Tholi Mettu</h1>
             
             <div class="grid">
-                <div class="col manual-col"><div class="col-header">Manual</div>
-        <div class="player-section">
+                <div class="col manual-col"><div class="col-header">Manual</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
                 <source src="Narasimha_Yekku_Tholi_Mettu_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">11 Segments Identified</div><div class="segments-list" id="segments-manual">
+        </div><div class="metrics">11 Segments Identified</div><div class="segments-list" id="segments-manual">
         <div class="segment" onclick="manualPlayer.playSegment(0.0, 11.0, this)">
             <span class="label">humming</span>
             <span class="time">00:00 - 00:11</span>
@@ -174,15 +179,32 @@
             <span class="time">03:40 - 04:28</span>
         </div>
         </div></div>
-                <div class="col demucs-col"><div class="col-header">Demucs</div>
-        <div class="player-section">
+                <div class="col demucs-col"><div class="col-header">Demucs</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
                 <source src="Narasimha_Yekku_Tholi_Mettu_Demucs/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">5 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Narasimha_Yekku_Tholi_Mettu_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
+                <source src="Narasimha_Yekku_Tholi_Mettu_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Narasimha_Yekku_Tholi_Mettu_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
+                <source src="Narasimha_Yekku_Tholi_Mettu_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">7 Segments Identified</div><div class="segments-list" id="segments-demucs">
         <div class="segment" onclick="demucsPlayer.playSegment(0.0, 4.0, this)">
-            <span class="label">Intro</span>
+            <span class="label">Intro (Instrumental)</span>
             <span class="time">00:00 - 00:04</span>
         </div>
         
@@ -196,29 +218,56 @@
             <span class="time">01:40 - 02:10</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(130.0, 221.5, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(130.0, 222.0, this)">
             <span class="label">Charanam 1</span>
-            <span class="time">02:10 - 03:41</span>
+            <span class="time">02:10 - 03:42</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(221.5, 268.12, this)">
-            <span class="label">Outro</span>
-            <span class="time">03:41 - 04:28</span>
+        <div class="segment" onclick="demucsPlayer.playSegment(222.0, 257.5, this)">
+            <span class="label">Interlude 2</span>
+            <span class="time">03:42 - 04:17</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(257.5, 258.0, this)">
+            <span class="label">Humming / Alaap</span>
+            <span class="time">04:17 - 04:18</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(258.0, 268.5, this)">
+            <span class="label">Outro (Instrumental)</span>
+            <span class="time">04:18 - 04:28</span>
         </div>
         </div></div>
-                <div class="col sam-col"><div class="col-header">SAM</div>
-        <div class="player-section">
+                <div class="col sam-col"><div class="col-header">SAM</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
                 <source src="Narasimha_Yekku_Tholi_Mettu_SAM/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">2 Segments Identified</div><div class="segments-list" id="segments-sam">
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Narasimha_Yekku_Tholi_Mettu_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
+                <source src="Narasimha_Yekku_Tholi_Mettu_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Narasimha_Yekku_Tholi_Mettu_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
+                <source src="Narasimha_Yekku_Tholi_Mettu_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">2 Segments Identified</div><div class="segments-list" id="segments-sam">
         <div class="segment" onclick="samPlayer.playSegment(0.0, 4.0, this)">
-            <span class="label">Intro</span>
+            <span class="label">Intro (Instrumental)</span>
             <span class="time">00:00 - 00:04</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(4.0, 268.12, this)">
+        <div class="segment" onclick="samPlayer.playSegment(4.0, 268.5, this)">
             <span class="label">Pallavi</span>
             <span class="time">00:04 - 04:28</span>
         </div>

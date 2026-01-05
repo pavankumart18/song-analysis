@@ -77,9 +77,9 @@ def process_song(audio_path):
     output_name = f"{audio_path.stem}_structure"
     output_path = audio_path.parent / output_name
     
-    if output_path.with_suffix('.json').exists():
-        print(f"Skipping {audio_path.name}, structure already exists.")
-        return
+    # if output_path.with_suffix('.json').exists():
+    #     print(f"Skipping {audio_path.name}, structure already exists.")
+    #     return
 
     print(f"=== Processing {audio_path.name} ===")
 
@@ -93,10 +93,12 @@ def process_song(audio_path):
 
     # 2. Vocal Activity Scanning & Block Detection
     # Reduced window to 0.5s for better resolution. Increased threshold to 0.035 to ignore deeper noise/breathing.
-    detector = BlockDetector(window_duration=0.5, energy_threshold=0.035) 
+    # Detect if we are processing a SAM folder
+    is_sam_folder = "SAM" in audio_path.parent.name or "sam" in audio_path.parent.name
+    
     detector = BlockDetector(window_duration=0.5, energy_threshold=0.035) 
     try:
-        blocks = detector.process(vocals_path)
+        blocks = detector.process(vocals_path, is_sam=is_sam_folder)
     except Exception as e:
         print(f"Block detection failed: {e}")
         return

@@ -1,26 +1,26 @@
 [
   {
-    "label": "Intro",
+    "label": "Intro (Instrumental)",
     "start": 0.0,
-    "end": 8.0,
+    "end": 8.5,
     "type": "instrumental"
   },
   {
-    "label": "Pallavi",
-    "start": 8.0,
-    "end": 65.5,
+    "label": "Humming / Alaap",
+    "start": 8.5,
+    "end": 66.5,
     "type": "vocals"
   },
   {
     "label": "Interlude 1",
-    "start": 65.5,
-    "end": 82.5,
+    "start": 66.5,
+    "end": 78.5,
     "type": "instrumental"
   },
   {
     "label": "Charanam 1",
-    "start": 82.5,
-    "end": 241.48,
+    "start": 78.5,
+    "end": 241.5,
     "type": "vocals"
   }
 ]

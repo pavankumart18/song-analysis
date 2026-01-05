@@ -60,9 +60,12 @@
     
     .player-section {
         padding: 15px;
-        background: rgba(0,0,0,0.2);
         border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
+    .player-label { font-size: 0.8em; color: #888; margin-bottom: 4px; display: block; }
     audio { width: 100%; height: 32px; }
     
     .metrics {
@@ -90,8 +93,9 @@
         cursor: pointer;
         transition: background 0.2s;
         font-size: 0.9em;
+        border: 1px solid transparent;
     }
-    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
     .segment.active { background: #fff; color: #000; }
     .segment.active .time { color: #333; }
     
@@ -112,13 +116,14 @@
             <h1>Nuvvostanante Nenoddantana S</h1>
             
             <div class="grid">
-                <div class="col manual-col"><div class="col-header">Manual</div>
-        <div class="player-section">
+                <div class="col manual-col"><div class="col-header">Manual</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
                 <source src="Nuvvostanante_Nenoddantana_s_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">13 Segments Identified</div><div class="segments-list" id="segments-manual">
+        </div><div class="metrics">13 Segments Identified</div><div class="segments-list" id="segments-manual">
         <div class="segment" onclick="manualPlayer.playSegment(0.0, 12.0, this)">
             <span class="label">Intro ( Instrumental )</span>
             <span class="time">00:00 - 00:12</span>
@@ -184,78 +189,107 @@
             <span class="time">03:57 - 04:07</span>
         </div>
         </div></div>
-                <div class="col demucs-col"><div class="col-header">Demucs</div>
-        <div class="player-section">
+                <div class="col demucs-col"><div class="col-header">Demucs</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
                 <source src="Nuvvostanante_Nenoddantana_s_Demucs/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-demucs">
-        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 2.0, this)">
-            <span class="label">Intro</span>
-            <span class="time">00:00 - 00:02</span>
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Nuvvostanante_Nenoddantana_s_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
+                <source src="Nuvvostanante_Nenoddantana_s_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+            </audio>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(2.0, 4.5, this)">
-            <span class="label">Intro Humming</span>
-            <span class="time">00:02 - 00:04</span>
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Nuvvostanante_Nenoddantana_s_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
+                <source src="Nuvvostanante_Nenoddantana_s_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">5 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 4.5, this)">
+            <span class="label">Intro (Humming)</span>
+            <span class="time">00:00 - 00:04</span>
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(4.5, 13.0, this)">
-            <span class="label">Intro</span>
+            <span class="label">Intro (Instrumental)</span>
             <span class="time">00:04 - 00:13</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(13.0, 113.0, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(13.0, 113.5, this)">
             <span class="label">Pallavi</span>
             <span class="time">00:13 - 01:53</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(113.0, 128.5, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(113.5, 128.5, this)">
             <span class="label">Interlude 1</span>
             <span class="time">01:53 - 02:08</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(128.5, 247.93, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(128.5, 248.0, this)">
             <span class="label">Charanam 1</span>
-            <span class="time">02:08 - 04:07</span>
+            <span class="time">02:08 - 04:08</span>
         </div>
         </div></div>
-                <div class="col sam-col"><div class="col-header">SAM</div>
-        <div class="player-section">
+                <div class="col sam-col"><div class="col-header">SAM</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
                 <source src="Nuvvostanante_Nenoddantana_s_SAM/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-sam">
-        <div class="segment" onclick="samPlayer.playSegment(0.0, 2.0, this)">
-            <span class="label">Intro</span>
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Nuvvostanante_Nenoddantana_s_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
+                <source src="Nuvvostanante_Nenoddantana_s_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Nuvvostanante_Nenoddantana_s_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
+                <source src="Nuvvostanante_Nenoddantana_s_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 2.5, this)">
+            <span class="label">Intro (Instrumental)</span>
             <span class="time">00:00 - 00:02</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(2.0, 4.5, this)">
-            <span class="label">Intro Humming</span>
+        <div class="segment" onclick="samPlayer.playSegment(2.5, 4.5, this)">
+            <span class="label">Humming / Alaap</span>
             <span class="time">00:02 - 00:04</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(4.5, 13.0, this)">
-            <span class="label">Interlude 1</span>
+            <span class="label">Intro (Instrumental)</span>
             <span class="time">00:04 - 00:13</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(13.0, 195.0, this)">
+        <div class="segment" onclick="samPlayer.playSegment(13.0, 199.0, this)">
             <span class="label">Pallavi</span>
-            <span class="time">00:13 - 03:15</span>
+            <span class="time">00:13 - 03:19</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(195.0, 204.5, this)">
-            <span class="label">Interlude 2</span>
-            <span class="time">03:15 - 03:24</span>
+        <div class="segment" onclick="samPlayer.playSegment(199.0, 208.5, this)">
+            <span class="label">Interlude 1</span>
+            <span class="time">03:19 - 03:28</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(204.5, 247.92, this)">
+        <div class="segment" onclick="samPlayer.playSegment(208.5, 248.0, this)">
             <span class="label">Charanam 1</span>
-            <span class="time">03:24 - 04:07</span>
+            <span class="time">03:28 - 04:08</span>
         </div>
         </div></div>
             </div>

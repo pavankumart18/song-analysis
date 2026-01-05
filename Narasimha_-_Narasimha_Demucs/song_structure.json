@@ -8,12 +8,12 @@
   {
     "label": "Interlude 1",
     "start": 79.0,
-    "end": 109.0,
+    "end": 105.5,
     "type": "instrumental"
   },
   {
-    "label": "Bridge",
-    "start": 109.0,
+    "label": "Humming / Alaap",
+    "start": 105.5,
     "end": 111.0,
     "type": "vocals"
   },
@@ -26,19 +26,19 @@
   {
     "label": "Charanam 1",
     "start": 124.0,
-    "end": 208.0,
+    "end": 208.5,
     "type": "vocals"
   },
   {
     "label": "Interlude 3",
-    "start": 208.0,
-    "end": 239.0,
+    "start": 208.5,
+    "end": 239.5,
     "type": "instrumental"
   },
   {
     "label": "Charanam 2",
-    "start": 239.0,
-    "end": 335.65,
+    "start": 239.5,
+    "end": 336.0,
     "type": "vocals"
   }
 ]

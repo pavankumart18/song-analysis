@@ -8,13 +8,13 @@
 ## 2. Detected Segmentation (Audio Analysis)
 | Index | Label | Start (s) | End (s) | Duration (s) |
 | :--- | :--- | :--- | :--- | :--- |
-| 0 | **Intro Humming** | 0.0 | 65.5 | 65.5 |
+| 0 | **Pallavi** | 0.0 | 65.5 | 65.5 |
 | 1 | **Interlude 1** | 65.5 | 82.5 | 17.0 |
-| 2 | **Pallavi** | 82.5 | 132.0 | 49.5 |
+| 2 | **Charanam 1** | 82.5 | 132.0 | 49.5 |
 | 3 | **Interlude 2** | 132.0 | 160.5 | 28.5 |
-| 4 | **Charanam 1** | 160.5 | 210.0 | 49.5 |
-| 5 | **Interlude 3** | 210.0 | 226.5 | 16.5 |
-| 6 | **Charanam 2** | 226.5 | 241.48 | 14.98 |
+| 4 | **Charanam 2** | 160.5 | 210.0 | 49.5 |
+| 5 | **Interlude 3** | 210.0 | 227.0 | 17.0 |
+| 6 | **Pallavi** | 227.0 | 241.5 | 14.5 |
 
 ## 3. Verification & Comparison
 - Compare the **LLM Estimated** 'Pallavi' start vs **Detected** 'Pallavi' start.

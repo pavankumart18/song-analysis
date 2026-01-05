@@ -10,7 +10,7 @@ class LLMFormatter:
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json"
         }
-        self.model = "gpt-4o" # Assuming a capable model is available, or user implied default. Using a standard placeholder or "gpt-4o" as is common with OpenAI compatible endpoints. If fails, I might try "gpt-3.5-turbo" or "gemini-1.5-pro" if supported, but usually these proxied endpoints map to OpenAI models. I'll stick to 'gpt-4o' or 'gpt-4-turbo' for best reasoning. Let's try 'gpt-4o'.
+        self.model = "gpt-4o" 
 
     def generate_structure(self, blocks, song_name="Unknown Song", estimated_start=0):
         """
@@ -18,16 +18,20 @@ class LLMFormatter:
         """
         print(f"[LLM] Sending blocks for {song_name}...")
         
-        # Prepare blocks with IDs to ensure strict mapping
+        # Prepare blocks with IDs and enhanced features
         indexed_blocks = []
         for i, b in enumerate(blocks):
-            indexed_blocks.append({
+            block_data = {
                 "id": i,
                 "type": b['type'],
                 "start": b['start'],
                 "end": b['end'],
-                "duration": round(b['end'] - b['start'], 2)
-            })
+                "duration": round(b['end'] - b['start'], 2),
+                "is_melodic": b.get('is_melodic', False),
+                # New Flag: Did we detect the melody repeating elsewhere?
+                "repeats_later": b.get('repeats', False)
+            }
+            indexed_blocks.append(block_data)
 
         user_message = json.dumps({
             "song_name": song_name,
@@ -39,30 +43,41 @@ class LLMFormatter:
         system_prompt = """
         You are a Senior Audio ML + Music Intelligence Engineer with strong understanding of Indian (Telugu/Tamil/Hindi) film song structure.
         
-        Input: A list of segmented audio blocks (vocals/instrumental) with IDs and timestamps.
+        Input: A list of segmented audio blocks with features:
+        - Timestamps (start/end)
+        - Type (vocals/instrumental)
+        - **is_melodic**: True if consistent pitch was detected.
+        - **repeats_later**: True if the melody of this block mathematically matches a future block.
         
-        Your Goal: Assign a Label to each block ID based on its sequence and duration.
+        Your Goal: Assign a Label to each block ID based on sequence, duration, and features.
         
-        CRITICAL: Do NOT change the timestamps. The input is effectively ground truth for audio activity.
+        CRITICAL: Do NOT change the timestamps. 
         
-        HINT: The database estimates the 'Main Vocals' (Pallavi) start around the provided 'estimated_main_vocals_start_time'.
-        - Any vocal blocks significantly BEFORE this time are likely 'Humming', 'Intro Ad-lib', or 'Bridge', NOT the Pallavi.
-        - The vocal block closest to or containing this timestamp is likely the start of 'Pallavi'.
-        
-        Rules for Labeling:
-        1. Vocal blocks:
-           - Use the hint above to distinguish 'Intro Humming' from 'Pallavi'.
-           - Vocal blocks after Pallavi are 'Charanam 1', 'Charanam 2', etc.
-        2. Instrumental blocks:
-           - Label as 'Interlude 1', 'Interlude 2', 'Intro', or 'Outro'.
+        **Indian Film Song Logic (Grammar):**
+        1. **Pallavi (Chorus)**: 
+           - The "Main Theme" of the song. 
+           - **MUST have 'repeats_later': true** (The core definition of a Pallavi is that it repeats).
+           - Typically starts after the Intro (around 30-60s mark).
+        2. **Intro**: 
+           - Usually instrumental or soft humming before the main beat.
+        3. **Interlude**: 
+           - STRICTLY Instrumental sections between vocal blocks.
+           - Usually long (> 15s).
+        4. **Charanam (Verse)**: 
+           - Long vocal blocks that follow an Interlude.
+           - Usually there are 2 or 3 Charanams per song.
+        5. **Humming / Alaap**: 
+           - Short melodic blocks that do NOT repeat identically later (ad-libs).
+           
+        **HINT:** provided 'estimated_main_vocals_start_time' is a rough guess for the Pallavi start.
         
         Output Format:
         A JSON array of ONLY objects with "id" and "label".
         Example:
         [
-          { "id": 0, "label": "Intro Humming" },
-          { "id": 1, "label": "Intro" },
-          { "id": 2, "label": "Pallavi" }
+          { "id": 0, "label": "Intro (Instrumental)" },
+          { "id": 1, "label": "Pallavi" },
+          { "id": 2, "label": "Interlude 1" }
         ]
         """
         
@@ -74,8 +89,7 @@ class LLMFormatter:
             ],
             "temperature": 0.0
         }
-
-        response = None
+    
         try:
             response = requests.post(self.api_url, headers=self.headers, json=payload, timeout=60)
             response.raise_for_status()
@@ -92,7 +106,6 @@ class LLMFormatter:
             labels_list = json.loads(content.strip())
             
             # Merge labels back into original blocks
-            # Create a map for quick lookup
             label_map = { item['id']: item['label'] for item in labels_list }
             
             final_structure = []
@@ -105,7 +118,7 @@ class LLMFormatter:
                 })
                 
             return final_structure
-
+            
         except Exception as e:
             print(f"[LLM] Error (using Rule-Based Fallback): {e}")
             return self._fallback_logic(blocks)
@@ -204,6 +217,10 @@ class LLMFormatter:
             data = response.json()
             content = data["choices"][0]["message"]["content"]
             
+            if not content:
+                 print(f"[LLM] Warning: Empty content received from expected structure API.")
+                 return []
+
             if "```json" in content:
                 content = content.replace("```json", "").replace("```", "")
             elif "```" in content:
@@ -211,7 +228,7 @@ class LLMFormatter:
                  
             return json.loads(content.strip())
         except Exception as e:
-            print(f"[LLM] Expected structure fetch failed: {e}")
+            print(f"[LLM] Expected structure fetch failed (Non-Critical): {e}")
             return []
 
     def _fallback_logic(self, blocks):

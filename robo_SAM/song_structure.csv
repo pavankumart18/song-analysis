@@ -1,7 +1,7 @@
 Label,Start (s),End (s)
-Intro,0.0,11.0
-Pallavi,11.0,28.0
-Interlude 1,28.0,39.0
-Charanam 1,39.0,209.5
-Interlude 2,209.5,226.5
-Charanam 2,226.5,316.8
+Intro (Instrumental),0.0,1.5
+Humming / Alaap,1.5,2.0
+Intro (Instrumental),2.0,11.5
+Pallavi,11.5,30.5
+Interlude 1,30.5,40.0
+Charanam 1,40.0,317.0

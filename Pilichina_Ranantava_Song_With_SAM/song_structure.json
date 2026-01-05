@@ -1,56 +1,56 @@
 [
   {
-    "label": "Intro",
+    "label": "Intro (Instrumental)",
     "start": 0.0,
-    "end": 19.5,
-    "type": "instrumental"
-  },
-  {
-    "label": "Intro Humming",
-    "start": 19.5,
-    "end": 33.0,
-    "type": "vocals"
-  },
-  {
-    "label": "Interlude 1",
-    "start": 33.0,
-    "end": 43.5,
+    "end": 20.0,
     "type": "instrumental"
   },
   {
     "label": "Pallavi",
-    "start": 43.5,
-    "end": 95.0,
+    "start": 20.0,
+    "end": 33.5,
     "type": "vocals"
   },
   {
-    "label": "Interlude 2",
-    "start": 95.0,
-    "end": 124.0,
+    "label": "Interlude 1",
+    "start": 33.5,
+    "end": 44.0,
     "type": "instrumental"
   },
   {
     "label": "Charanam 1",
-    "start": 124.0,
-    "end": 208.5,
+    "start": 44.0,
+    "end": 97.0,
     "type": "vocals"
   },
   {
-    "label": "Interlude 3",
-    "start": 208.5,
-    "end": 219.5,
+    "label": "Interlude 2",
+    "start": 97.0,
+    "end": 126.0,
     "type": "instrumental"
   },
   {
     "label": "Charanam 2",
-    "start": 219.5,
-    "end": 295.5,
+    "start": 126.0,
+    "end": 213.0,
     "type": "vocals"
   },
   {
-    "label": "Outro",
-    "start": 295.5,
-    "end": 317.04,
+    "label": "Interlude 3",
+    "start": 213.0,
+    "end": 223.5,
+    "type": "instrumental"
+  },
+  {
+    "label": "Charanam 3",
+    "start": 223.5,
+    "end": 301.5,
+    "type": "vocals"
+  },
+  {
+    "label": "Interlude 4",
+    "start": 301.5,
+    "end": 317.5,
     "type": "instrumental"
   }
 ]

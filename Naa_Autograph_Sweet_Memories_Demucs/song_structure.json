@@ -1,6 +1,6 @@
 [
   {
-    "label": "Intro",
+    "label": "Intro (Instrumental)",
     "start": 0.0,
     "end": 17.0,
     "type": "instrumental"
@@ -14,13 +14,31 @@
   {
     "label": "Interlude 1",
     "start": 155.5,
-    "end": 174.0,
+    "end": 173.0,
     "type": "instrumental"
   },
   {
     "label": "Charanam 1",
-    "start": 174.0,
-    "end": 266.14,
+    "start": 173.0,
+    "end": 232.0,
     "type": "vocals"
+  },
+  {
+    "label": "Interlude 2",
+    "start": 232.0,
+    "end": 238.5,
+    "type": "instrumental"
+  },
+  {
+    "label": "Charanam 2",
+    "start": 238.5,
+    "end": 259.5,
+    "type": "vocals"
+  },
+  {
+    "label": "Outro (Instrumental)",
+    "start": 259.5,
+    "end": 266.5,
+    "type": "instrumental"
   }
 ]

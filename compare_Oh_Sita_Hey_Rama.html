@@ -60,9 +60,12 @@
     
     .player-section {
         padding: 15px;
-        background: rgba(0,0,0,0.2);
         border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
+    .player-label { font-size: 0.8em; color: #888; margin-bottom: 4px; display: block; }
     audio { width: 100%; height: 32px; }
     
     .metrics {
@@ -90,8 +93,9 @@
         cursor: pointer;
         transition: background 0.2s;
         font-size: 0.9em;
+        border: 1px solid transparent;
     }
-    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
     .segment.active { background: #fff; color: #000; }
     .segment.active .time { color: #333; }
     
@@ -112,13 +116,14 @@
             <h1>Oh Sita Hey Rama</h1>
             
             <div class="grid">
-                <div class="col manual-col"><div class="col-header">Manual</div>
-        <div class="player-section">
+                <div class="col manual-col"><div class="col-header">Manual</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
                 <source src="Oh_Sita_Hey_Rama_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">8 Segments Identified</div><div class="segments-list" id="segments-manual">
+        </div><div class="metrics">8 Segments Identified</div><div class="segments-list" id="segments-manual">
         <div class="segment" onclick="manualPlayer.playSegment(0.0, 17.0, this)">
             <span class="label">Intro (Instrumental)</span>
             <span class="time">00:00 - 00:17</span>
@@ -159,93 +164,147 @@
             <span class="time">02:41 - 03:40</span>
         </div>
         </div></div>
-                <div class="col demucs-col"><div class="col-header">Demucs</div>
-        <div class="player-section">
+                <div class="col demucs-col"><div class="col-header">Demucs</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
                 <source src="Oh_Sita_Hey_Rama_Demucs/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">7 Segments Identified</div><div class="segments-list" id="segments-demucs">
-        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 17.5, this)">
-            <span class="label">Intro</span>
-            <span class="time">00:00 - 00:17</span>
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Oh_Sita_Hey_Rama_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
+                <source src="Oh_Sita_Hey_Rama_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+            </audio>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(17.5, 106.0, this)">
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Oh_Sita_Hey_Rama_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
+                <source src="Oh_Sita_Hey_Rama_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">11 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        <div class="segment" onclick="demucsPlayer.playSegment(0.0, 1.0, this)">
+            <span class="label">Intro (Instrumental)</span>
+            <span class="time">00:00 - 00:01</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(1.0, 1.5, this)">
+            <span class="label">Humming / Alaap</span>
+            <span class="time">00:01 - 00:01</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(1.5, 17.5, this)">
+            <span class="label">Intro (Instrumental)</span>
+            <span class="time">00:01 - 00:17</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(17.5, 109.0, this)">
             <span class="label">Pallavi</span>
-            <span class="time">00:17 - 01:46</span>
+            <span class="time">00:17 - 01:49</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(106.0, 127.5, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(109.0, 118.5, this)">
             <span class="label">Interlude 1</span>
-            <span class="time">01:46 - 02:07</span>
+            <span class="time">01:49 - 01:58</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(127.5, 160.5, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(118.5, 161.0, this)">
             <span class="label">Charanam 1</span>
-            <span class="time">02:07 - 02:40</span>
+            <span class="time">01:58 - 02:41</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(160.5, 204.5, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(161.0, 190.0, this)">
             <span class="label">Interlude 2</span>
-            <span class="time">02:40 - 03:24</span>
+            <span class="time">02:41 - 03:10</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(204.5, 215.0, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(190.0, 192.0, this)">
+            <span class="label">Humming / Alaap</span>
+            <span class="time">03:10 - 03:12</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(192.0, 205.0, this)">
+            <span class="label">Interlude 3</span>
+            <span class="time">03:12 - 03:25</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(205.0, 215.0, this)">
             <span class="label">Charanam 2</span>
-            <span class="time">03:24 - 03:35</span>
+            <span class="time">03:25 - 03:35</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(215.0, 225.38, this)">
-            <span class="label">Outro</span>
+        <div class="segment" onclick="demucsPlayer.playSegment(215.0, 225.5, this)">
+            <span class="label">Outro (Instrumental)</span>
             <span class="time">03:35 - 03:45</span>
         </div>
         </div></div>
-                <div class="col sam-col"><div class="col-header">SAM</div>
-        <div class="player-section">
+                <div class="col sam-col"><div class="col-header">SAM</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
                 <source src="Oh_Sita_Hey_Rama_SAM/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">8 Segments Identified</div><div class="segments-list" id="segments-sam">
-        <div class="segment" onclick="samPlayer.playSegment(0.0, 17.5, this)">
-            <span class="label">Intro</span>
-            <span class="time">00:00 - 00:17</span>
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Oh_Sita_Hey_Rama_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
+                <source src="Oh_Sita_Hey_Rama_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+            </audio>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(17.5, 120.0, this)">
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Oh_Sita_Hey_Rama_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
+                <source src="Oh_Sita_Hey_Rama_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">8 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 18.0, this)">
+            <span class="label">Intro (Instrumental)</span>
+            <span class="time">00:00 - 00:18</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(18.0, 128.5, this)">
             <span class="label">Pallavi</span>
-            <span class="time">00:17 - 02:00</span>
+            <span class="time">00:18 - 02:08</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(120.0, 138.5, this)">
+        <div class="segment" onclick="samPlayer.playSegment(128.5, 141.0, this)">
             <span class="label">Interlude 1</span>
-            <span class="time">02:00 - 02:18</span>
+            <span class="time">02:08 - 02:21</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(138.5, 160.5, this)">
+        <div class="segment" onclick="samPlayer.playSegment(141.0, 164.0, this)">
             <span class="label">Charanam 1</span>
-            <span class="time">02:18 - 02:40</span>
+            <span class="time">02:21 - 02:44</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(160.5, 180.0, this)">
+        <div class="segment" onclick="samPlayer.playSegment(164.0, 183.5, this)">
             <span class="label">Interlude 2</span>
-            <span class="time">02:40 - 03:00</span>
+            <span class="time">02:44 - 03:03</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(180.0, 215.0, this)">
+        <div class="segment" onclick="samPlayer.playSegment(183.5, 219.0, this)">
             <span class="label">Charanam 2</span>
-            <span class="time">03:00 - 03:35</span>
+            <span class="time">03:03 - 03:39</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(215.0, 225.0, this)">
+        <div class="segment" onclick="samPlayer.playSegment(219.0, 229.5, this)">
             <span class="label">Interlude 3</span>
-            <span class="time">03:35 - 03:45</span>
+            <span class="time">03:39 - 03:49</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(225.0, 233.24, this)">
-            <span class="label">Outro</span>
-            <span class="time">03:45 - 03:53</span>
+        <div class="segment" onclick="samPlayer.playSegment(229.5, 233.5, this)">
+            <span class="label">Humming / Alaap</span>
+            <span class="time">03:49 - 03:53</span>
         </div>
         </div></div>
             </div>

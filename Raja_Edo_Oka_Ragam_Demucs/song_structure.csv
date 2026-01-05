@@ -1,8 +1,8 @@
 Label,Start (s),End (s)
-Intro,0.0,17.5
+Intro (Instrumental),0.0,17.5
 Pallavi,17.5,78.5
-Interlude 1,78.5,106.0
-Charanam 1,106.0,153.5
-Interlude 2,153.5,167.0
-Charanam 2,167.0,241.5
-Outro,241.5,263.81
+Interlude 1,78.5,106.5
+Charanam 1,106.5,154.0
+Interlude 2,154.0,167.5
+Charanam 2,167.5,242.0
+Interlude 3,242.0,264.0

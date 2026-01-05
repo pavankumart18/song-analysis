@@ -60,9 +60,12 @@
     
     .player-section {
         padding: 15px;
-        background: rgba(0,0,0,0.2);
         border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
+    .player-label { font-size: 0.8em; color: #888; margin-bottom: 4px; display: block; }
     audio { width: 100%; height: 32px; }
     
     .metrics {
@@ -90,8 +93,9 @@
         cursor: pointer;
         transition: background 0.2s;
         font-size: 0.9em;
+        border: 1px solid transparent;
     }
-    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
     .segment.active { background: #fff; color: #000; }
     .segment.active .time { color: #333; }
     
@@ -112,13 +116,14 @@
             <h1>Mari Antaga Svsc Movie</h1>
             
             <div class="grid">
-                <div class="col manual-col"><div class="col-header">Manual</div>
-        <div class="player-section">
+                <div class="col manual-col"><div class="col-header">Manual</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
                 <source src="Mari_Antaga_SVSC_Movie_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">9 Segments Identified</div><div class="segments-list" id="segments-manual">
+        </div><div class="metrics">9 Segments Identified</div><div class="segments-list" id="segments-manual">
         <div class="segment" onclick="manualPlayer.playSegment(0.0, 8.0, this)">
             <span class="label">Intro ( Instrumental )</span>
             <span class="time">00:00 - 00:08</span>
@@ -164,15 +169,32 @@
             <span class="time">03:28 - 03:46</span>
         </div>
         </div></div>
-                <div class="col demucs-col"><div class="col-header">Demucs</div>
-        <div class="player-section">
+                <div class="col demucs-col"><div class="col-header">Demucs</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
                 <source src="Mari_Antaga_SVSC_Movie_Demucs/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">7 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Mari_Antaga_SVSC_Movie_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
+                <source src="Mari_Antaga_SVSC_Movie_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Mari_Antaga_SVSC_Movie_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
+                <source src="Mari_Antaga_SVSC_Movie_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">7 Segments Identified</div><div class="segments-list" id="segments-demucs">
         <div class="segment" onclick="demucsPlayer.playSegment(0.0, 65.5, this)">
-            <span class="label">Intro Humming</span>
+            <span class="label">Intro (Vocals)</span>
             <span class="time">00:00 - 01:05</span>
         </div>
         
@@ -196,41 +218,58 @@
             <span class="time">02:40 - 03:30</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(210.0, 226.5, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(210.0, 227.0, this)">
             <span class="label">Interlude 3</span>
-            <span class="time">03:30 - 03:46</span>
+            <span class="time">03:30 - 03:47</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(226.5, 241.48, this)">
-            <span class="label">Charanam 2</span>
-            <span class="time">03:46 - 04:01</span>
+        <div class="segment" onclick="demucsPlayer.playSegment(227.0, 241.5, this)">
+            <span class="label">Humming / Alaap</span>
+            <span class="time">03:47 - 04:01</span>
         </div>
         </div></div>
-                <div class="col sam-col"><div class="col-header">SAM</div>
-        <div class="player-section">
+                <div class="col sam-col"><div class="col-header">SAM</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
                 <source src="Mari_Antaga_SVSC_Movie_SAM/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">4 Segments Identified</div><div class="segments-list" id="segments-sam">
-        <div class="segment" onclick="samPlayer.playSegment(0.0, 8.0, this)">
-            <span class="label">Intro</span>
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Mari_Antaga_SVSC_Movie_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
+                <source src="Mari_Antaga_SVSC_Movie_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Mari_Antaga_SVSC_Movie_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
+                <source src="Mari_Antaga_SVSC_Movie_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">4 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 8.5, this)">
+            <span class="label">Intro (Instrumental)</span>
             <span class="time">00:00 - 00:08</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(8.0, 65.5, this)">
+        <div class="segment" onclick="samPlayer.playSegment(8.5, 66.5, this)">
             <span class="label">Pallavi</span>
-            <span class="time">00:08 - 01:05</span>
+            <span class="time">00:08 - 01:06</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(65.5, 82.5, this)">
+        <div class="segment" onclick="samPlayer.playSegment(66.5, 78.5, this)">
             <span class="label">Interlude 1</span>
-            <span class="time">01:05 - 01:22</span>
+            <span class="time">01:06 - 01:18</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(82.5, 241.48, this)">
+        <div class="segment" onclick="samPlayer.playSegment(78.5, 241.5, this)">
             <span class="label">Charanam 1</span>
-            <span class="time">01:22 - 04:01</span>
+            <span class="time">01:18 - 04:01</span>
         </div>
         </div></div>
             </div>

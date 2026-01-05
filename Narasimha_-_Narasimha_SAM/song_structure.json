@@ -1,14 +1,14 @@
 [
   {
-    "label": "Intro",
+    "label": "Intro (Instrumental)",
     "start": 0.0,
     "end": 11.5,
     "type": "instrumental"
   },
   {
-    "label": "Pallavi",
+    "label": "Humming / Alaap",
     "start": 11.5,
-    "end": 335.64,
+    "end": 336.0,
     "type": "vocals"
   }
 ]

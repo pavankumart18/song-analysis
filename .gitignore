@@ -1,23 +1,26 @@
-# Python
-__pycache__/
-*.py[cod]
+# Python Source Code (Not used for display)
+*.py
 venv/
-.env
+__pycache__/
+*.pyc
 
-# Large/Intermediate Audio Files
-*.wav
-*.flac
-**/separated/
+# Raw Inputs and Workspaces
+songs/
+separated/
+*_Manual/
+
+# Intermediate Artifacts
 **/segmented_parts/
-*_reconstructed_master.mp3
+**/temp/
 
-# SAM specific chunks (if any left in root)
-chunk_*.wav
-
-# System
-Thumbs.db
+# System Files
 .DS_Store
+Thumbs.db
+desktop.ini
 
-# We WANT song.mp3, but ignore other mp3s if they are intermediate?
-# verify_segments produces mp3s in segmented_parts (already ignored above).
-# So song.mp3 should be safe.
+# IDES
+.vscode/
+.idea/
+
+# Logs
+*.log

@@ -60,9 +60,12 @@
     
     .player-section {
         padding: 15px;
-        background: rgba(0,0,0,0.2);
         border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
+    .player-label { font-size: 0.8em; color: #888; margin-bottom: 4px; display: block; }
     audio { width: 100%; height: 32px; }
     
     .metrics {
@@ -90,8 +93,9 @@
         cursor: pointer;
         transition: background 0.2s;
         font-size: 0.9em;
+        border: 1px solid transparent;
     }
-    .segment:hover { background: rgba(255,255,255,0.1); }
+    .segment:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
     .segment.active { background: #fff; color: #000; }
     .segment.active .time { color: #333; }
     
@@ -112,13 +116,14 @@
             <h1>Naa Autograph Sweet Memories</h1>
             
             <div class="grid">
-                <div class="col manual-col"><div class="col-header">Manual</div>
-        <div class="player-section">
+                <div class="col manual-col"><div class="col-header">Manual</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
                 <source src="Naa_Autograph_Sweet_Memories_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">13 Segments Identified</div><div class="segments-list" id="segments-manual">
+        </div><div class="metrics">13 Segments Identified</div><div class="segments-list" id="segments-manual">
         <div class="segment" onclick="manualPlayer.playSegment(0.0, 16.0, this)">
             <span class="label">Intro ( Instrumental )</span>
             <span class="time">00:00 - 00:16</span>
@@ -184,15 +189,32 @@
             <span class="time">03:59 - 04:26</span>
         </div>
         </div></div>
-                <div class="col demucs-col"><div class="col-header">Demucs</div>
-        <div class="player-section">
+                <div class="col demucs-col"><div class="col-header">Demucs</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
                 <source src="Naa_Autograph_Sweet_Memories_Demucs/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">4 Segments Identified</div><div class="segments-list" id="segments-demucs">
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Naa_Autograph_Sweet_Memories_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
+                <source src="Naa_Autograph_Sweet_Memories_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Naa_Autograph_Sweet_Memories_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
+                <source src="Naa_Autograph_Sweet_Memories_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">7 Segments Identified</div><div class="segments-list" id="segments-demucs">
         <div class="segment" onclick="demucsPlayer.playSegment(0.0, 17.0, this)">
-            <span class="label">Intro</span>
+            <span class="label">Intro (Instrumental)</span>
             <span class="time">00:00 - 00:17</span>
         </div>
         
@@ -201,51 +223,93 @@
             <span class="time">00:17 - 02:35</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(155.5, 174.0, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(155.5, 173.0, this)">
             <span class="label">Interlude 1</span>
-            <span class="time">02:35 - 02:54</span>
+            <span class="time">02:35 - 02:53</span>
         </div>
         
-        <div class="segment" onclick="demucsPlayer.playSegment(174.0, 266.14, this)">
+        <div class="segment" onclick="demucsPlayer.playSegment(173.0, 232.0, this)">
             <span class="label">Charanam 1</span>
-            <span class="time">02:54 - 04:26</span>
+            <span class="time">02:53 - 03:52</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(232.0, 238.5, this)">
+            <span class="label">Bridge</span>
+            <span class="time">03:52 - 03:58</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(238.5, 259.5, this)">
+            <span class="label">Pallavi</span>
+            <span class="time">03:58 - 04:19</span>
+        </div>
+        
+        <div class="segment" onclick="demucsPlayer.playSegment(259.5, 266.5, this)">
+            <span class="label">Outro (Instrumental)</span>
+            <span class="time">04:19 - 04:26</span>
         </div>
         </div></div>
-                <div class="col sam-col"><div class="col-header">SAM</div>
-        <div class="player-section">
+                <div class="col sam-col"><div class="col-header">SAM</div><div class="player-section">
+        <div>
+            <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
                 <source src="Naa_Autograph_Sweet_Memories_SAM/song.mp3" type="audio/mpeg">
             </audio>
         </div>
-        <div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-sam">
-        <div class="segment" onclick="samPlayer.playSegment(0.0, 6.5, this)">
-            <span class="label">Intro</span>
-            <span class="time">00:00 - 00:06</span>
+        
+        <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
+            <span class="player-label">Raw Vocals (Stem)</span>
+            <audio controls>
+                <source src="Naa_Autograph_Sweet_Memories_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
+                <source src="Naa_Autograph_Sweet_Memories_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+            </audio>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(6.5, 76.5, this)">
+        <div>
+            <span class="player-label">No Vocals (Instrumental)</span>
+            <audio controls>
+                <source src="Naa_Autograph_Sweet_Memories_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
+                <source src="Naa_Autograph_Sweet_Memories_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+            </audio>
+        </div>
+        </div><div class="metrics">8 Segments Identified</div><div class="segments-list" id="segments-sam">
+        <div class="segment" onclick="samPlayer.playSegment(0.0, 7.0, this)">
+            <span class="label">Intro (Instrumental)</span>
+            <span class="time">00:00 - 00:07</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(7.0, 158.5, this)">
             <span class="label">Pallavi</span>
-            <span class="time">00:06 - 01:16</span>
+            <span class="time">00:07 - 02:38</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(76.5, 90.0, this)">
+        <div class="segment" onclick="samPlayer.playSegment(158.5, 165.0, this)">
             <span class="label">Interlude 1</span>
-            <span class="time">01:16 - 01:30</span>
+            <span class="time">02:38 - 02:45</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(90.0, 165.0, this)">
-            <span class="label">Charanam 1</span>
-            <span class="time">01:30 - 02:45</span>
+        <div class="segment" onclick="samPlayer.playSegment(165.0, 169.5, this)">
+            <span class="label">Humming / Alaap</span>
+            <span class="time">02:45 - 02:49</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(165.0, 174.0, this)">
+        <div class="segment" onclick="samPlayer.playSegment(169.5, 177.5, this)">
             <span class="label">Interlude 2</span>
-            <span class="time">02:45 - 02:54</span>
+            <span class="time">02:49 - 02:57</span>
         </div>
         
-        <div class="segment" onclick="samPlayer.playSegment(174.0, 266.12, this)">
+        <div class="segment" onclick="samPlayer.playSegment(177.5, 236.0, this)">
+            <span class="label">Charanam 1</span>
+            <span class="time">02:57 - 03:56</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(236.0, 242.5, this)">
+            <span class="label">Interlude 3</span>
+            <span class="time">03:56 - 04:02</span>
+        </div>
+        
+        <div class="segment" onclick="samPlayer.playSegment(242.5, 266.5, this)">
             <span class="label">Charanam 2</span>
-            <span class="time">02:54 - 04:26</span>
+            <span class="time">04:02 - 04:26</span>
         </div>
         </div></div>
             </div>
