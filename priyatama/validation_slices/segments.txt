@@ -1,4 +1,0 @@
-file 'C:/Users/admin/Desktop/song analysis/priyatama/validation_slices/00_Intro.mp3'
-file 'C:/Users/admin/Desktop/song analysis/priyatama/validation_slices/01_Pallavi.mp3'
-file 'C:/Users/admin/Desktop/song analysis/priyatama/validation_slices/02_Interlude_1.mp3'
-file 'C:/Users/admin/Desktop/song analysis/priyatama/validation_slices/03_Charanam_1.mp3'

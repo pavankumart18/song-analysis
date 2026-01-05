@@ -195,33 +195,75 @@ def render_column(version_name, class_name, folder_path, base_path):
         # Demucs: separated/htdemucs/song/vocals.mp3
         # SAM: separated/sam/song/vocals.wav
         
-        # Try finding vocals.*
+        # Try finding vocals.* and no_vocals.*
+        # Prioritize MP3 over WAV
+        
+        def find_best_audio(candidates):
+            if not candidates:
+                return None
+            # Sort: mp3 first, then others
+            candidates.sort(key=lambda p: (p.suffix != '.mp3', p.name))
+            return candidates[0]
+            
         voc_candidates = list(sep_dir.rglob("vocals.*"))
         novoc_candidates = list(sep_dir.rglob("no_vocals.*"))
         
-        if voc_candidates:
-            # relative path from the song folder, OR relative from base_path?
-            # The HTML is in base_path (Desktop/song analysis).
-            # So unique path is folder / ...
-            # We need path relative to base_path (where HTML is).
-            
-            # voc_candidates[0] is absolute.
-            # We need rel path: "ghallu_ghallu_Demucs/separated/..."
+        best_voc = find_best_audio(voc_candidates)
+        if best_voc:
             try:
-                vocals_rel = voc_candidates[0].relative_to(base_path)
-            except: pass
+                # IMPORTANT: path in HTML must be relative to base_path (Desktop/song analysis)
+                # Currently data is in base_path/data/song/....
+                # If HTML is in base_path, rel path is data/song/...
+                vocals_rel = best_voc.relative_to(base_path).as_posix()
+            except ValueError: pass
             
-        if novoc_candidates:
+        best_novoc = find_best_audio(novoc_candidates)
+        if best_novoc:
             try:
-                novocals_rel = novoc_candidates[0].relative_to(base_path)
-            except: pass
+                novocals_rel = best_novoc.relative_to(base_path).as_posix()
+            except ValueError: pass
     
     # Main Audio for Segment Clicking
-    # Default to song.mp3
+    # Find the Master Song for this group logic:
+    # The folders are siblings: X_Manual, X_Demucs, X_SAM
+    # We are in 'folder' (e.g. X_Demucs). We want X_Manual/song.mp3 if it exists.
+    
     main_audio_rel = ""
-    song_mp3 = folder / "song.mp3"
-    if song_mp3.exists():
-         main_audio_rel = f"{folder.name}/song.mp3"
+    
+    # Check if this folder HAS the song (Manual usually does)
+    local_song = folder / "song.mp3"
+    
+    if local_song.exists():
+        try:
+            main_audio_rel = local_song.relative_to(base_path).as_posix()
+        except: pass
+    else:
+        # Look for sibling folders with "_Manual" suffix corresponding to this one
+        # Current folder name: e.g. "ghallu_ghallu_Demucs"
+        # Base name: "ghallu_ghallu"
+        name = folder.name
+        base_name = ""
+        if "_Demucs" in name: base_name = name.replace("_Demucs", "")
+        elif "_SAM" in name: base_name = name.replace("_SAM", "")
+        elif "_Manual" in name: base_name = name.replace("_Manual", "")
+        
+        if base_name:
+            # Try finding Manual sibling
+            manual_sib = folder.parent / f"{base_name}_Manual" / "song.mp3"
+            if manual_sib.exists():
+                 try:
+                    main_audio_rel = manual_sib.relative_to(base_path).as_posix()
+                 except: pass
+            else:
+                 # Fallback: check Demucs/SAM siblings if we are in something else and Manual is missing
+                 # (Edge case, but good to handle)
+                 for suffix in ["_Demucs", "_SAM", "_Manual"]:
+                     sib = folder.parent / f"{base_name}{suffix}" / "song.mp3"
+                     if sib.exists():
+                        try:
+                            main_audio_rel = sib.relative_to(base_path).as_posix()
+                        except: pass
+                        break
 
     # Read Structure
     structure_file = folder / "song_structure.json"
@@ -238,11 +280,16 @@ def render_column(version_name, class_name, folder_path, base_path):
     
     # 1. Main Player (For Segments)
     if main_audio_rel:
+        # Check if mp3
+        mime = "audio/wav"
+        if main_audio_rel.endswith(".mp3"):
+            mime = "audio/mpeg"
+            
         html += f"""
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-{col_id}" controls>
-                <source src="{main_audio_rel}" type="audio/mpeg">
+                <source src="{main_audio_rel}" type="{mime}">
             </audio>
         </div>
         """
@@ -251,23 +298,23 @@ def render_column(version_name, class_name, folder_path, base_path):
         
     # 2. Raw Stems (If available)
     if vocals_rel:
+        v_mime = "audio/mpeg" if vocals_rel.endswith(".mp3") else "audio/wav"
         html += f"""
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
             <audio controls>
-                <source src="{vocals_rel}" type="audio/mpeg">
-                <source src="{vocals_rel}" type="audio/wav">
+                <source src="{vocals_rel}" type="{v_mime}">
             </audio>
         </div>
         """
         
     if novocals_rel:
+        nv_mime = "audio/mpeg" if novocals_rel.endswith(".mp3") else "audio/wav"
         html += f"""
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
             <audio controls>
-                <source src="{novocals_rel}" type="audio/mpeg">
-                <source src="{novocals_rel}" type="audio/wav">
+                <source src="{novocals_rel}" type="{nv_mime}">
             </audio>
         </div>
         """
@@ -304,7 +351,7 @@ def generate_comparison_pages():
     # 1. Group Songs
     grouped_songs = {} # { "Display Title": { "Manual": path, "Demucs": path, "SAM": path } }
     
-    for item in base_path.iterdir():
+    for item in (base_path / "data").iterdir():
         if item.is_dir():
             name = item.name
             
@@ -354,7 +401,7 @@ def generate_comparison_pages():
             {CSS}
         </head>
         <body>
-            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
             <h1>{title}</h1>
             
             <div class="grid">
@@ -437,9 +484,9 @@ def update_index_with_comparisons(grouped_songs, base_path):
 </html>
     """
     
-    with open(base_path / "index.html", "w", encoding='utf-8') as f:
+    with open(base_path / "dashboard.html", "w", encoding='utf-8') as f:
         f.write(index_html)
-    print("Index updated.")
+    print("Dashboard updated.")
 
 if __name__ == "__main__":
     generate_comparison_pages()

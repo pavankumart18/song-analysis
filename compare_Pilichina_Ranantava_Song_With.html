@@ -112,7 +112,7 @@
 
         </head>
         <body>
-            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
             <h1>Pilichina Ranantava Song With</h1>
             
             <div class="grid">
@@ -120,7 +120,7 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
-                <source src="Pilichina_Ranantava_Song_With_Manual/song.mp3" type="audio/mpeg">
+                <source src="data/Pilichina_Ranantava_Song_With_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">11 Segments Identified</div><div class="segments-list" id="segments-manual">
@@ -183,23 +183,21 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
-                <source src="Pilichina_Ranantava_Song_With_Demucs/song.mp3" type="audio/mpeg">
+                <source src="data/Pilichina_Ranantava_Song_With_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
             <audio controls>
-                <source src="Pilichina_Ranantava_Song_With_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
-                <source src="Pilichina_Ranantava_Song_With_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+                <source src="data/Pilichina_Ranantava_Song_With_Demucs/separated/htdemucs/song/vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
             <audio controls>
-                <source src="Pilichina_Ranantava_Song_With_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
-                <source src="Pilichina_Ranantava_Song_With_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+                <source src="data/Pilichina_Ranantava_Song_With_Demucs/separated/htdemucs/song/no_vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">9 Segments Identified</div><div class="segments-list" id="segments-demucs">
@@ -209,7 +207,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(19.5, 33.0, this)">
-            <span class="label">Humming / Alaap</span>
+            <span class="label">Pallavi</span>
             <span class="time">00:19 - 00:33</span>
         </div>
         
@@ -219,7 +217,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(43.5, 95.5, this)">
-            <span class="label">Pallavi</span>
+            <span class="label">Charanam 1</span>
             <span class="time">00:43 - 01:35</span>
         </div>
         
@@ -229,7 +227,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(124.0, 209.0, this)">
-            <span class="label">Charanam 1</span>
+            <span class="label">Charanam 2</span>
             <span class="time">02:04 - 03:29</span>
         </div>
         
@@ -239,7 +237,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(220.0, 296.0, this)">
-            <span class="label">Charanam 2</span>
+            <span class="label">Charanam 3</span>
             <span class="time">03:40 - 04:56</span>
         </div>
         
@@ -252,23 +250,21 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
-                <source src="Pilichina_Ranantava_Song_With_SAM/song.mp3" type="audio/mpeg">
+                <source src="data/Pilichina_Ranantava_Song_With_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
             <audio controls>
-                <source src="Pilichina_Ranantava_Song_With_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
-                <source src="Pilichina_Ranantava_Song_With_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+                <source src="data/Pilichina_Ranantava_Song_With_SAM/separated/sam/song/vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
             <audio controls>
-                <source src="Pilichina_Ranantava_Song_With_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
-                <source src="Pilichina_Ranantava_Song_With_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+                <source src="data/Pilichina_Ranantava_Song_With_SAM/separated/sam/song/no_vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">9 Segments Identified</div><div class="segments-list" id="segments-sam">
@@ -278,42 +274,42 @@
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(20.0, 33.5, this)">
-            <span class="label">Humming / Alaap</span>
+            <span class="label">Pallavi</span>
             <span class="time">00:20 - 00:33</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(33.5, 44.0, this)">
-            <span class="label">Bridge</span>
+            <span class="label">Interlude 1</span>
             <span class="time">00:33 - 00:44</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(44.0, 97.0, this)">
-            <span class="label">Pallavi</span>
+            <span class="label">Charanam 1</span>
             <span class="time">00:44 - 01:37</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(97.0, 126.0, this)">
-            <span class="label">Interlude 1</span>
+            <span class="label">Interlude 2</span>
             <span class="time">01:37 - 02:06</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(126.0, 213.0, this)">
-            <span class="label">Charanam 1</span>
+            <span class="label">Charanam 2</span>
             <span class="time">02:06 - 03:33</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(213.0, 223.5, this)">
-            <span class="label">Bridge</span>
+            <span class="label">Interlude 3</span>
             <span class="time">03:33 - 03:43</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(223.5, 301.5, this)">
-            <span class="label">Charanam 2</span>
+            <span class="label">Charanam 3</span>
             <span class="time">03:43 - 05:01</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(301.5, 317.5, this)">
-            <span class="label">Interlude 2</span>
+            <span class="label">Interlude 4</span>
             <span class="time">05:01 - 05:17</span>
         </div>
         </div></div>

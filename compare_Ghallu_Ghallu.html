@@ -112,7 +112,7 @@
 
         </head>
         <body>
-            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
             <h1>Ghallu Ghallu</h1>
             
             <div class="grid">
@@ -120,7 +120,7 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
-                <source src="ghallu_ghallu_Manual/song.mp3" type="audio/mpeg">
+                <source src="data/ghallu_ghallu_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">13 Segments Identified</div><div class="segments-list" id="segments-manual">
@@ -193,23 +193,21 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
-                <source src="ghallu_ghallu_Demucs/song.mp3" type="audio/mpeg">
+                <source src="data/ghallu_ghallu_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
             <audio controls>
-                <source src="ghallu_ghallu_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
-                <source src="ghallu_ghallu_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+                <source src="data/ghallu_ghallu_Demucs/separated/htdemucs/song/vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
             <audio controls>
-                <source src="ghallu_ghallu_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
-                <source src="ghallu_ghallu_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+                <source src="data/ghallu_ghallu_Demucs/separated/htdemucs/song/no_vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">8 Segments Identified</div><div class="segments-list" id="segments-demucs">
@@ -219,7 +217,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(11.0, 21.5, this)">
-            <span class="label">Humming / Alaap</span>
+            <span class="label">Pallavi</span>
             <span class="time">00:11 - 00:21</span>
         </div>
         
@@ -229,7 +227,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(36.5, 101.5, this)">
-            <span class="label">Pallavi</span>
+            <span class="label">Charanam 1</span>
             <span class="time">00:36 - 01:41</span>
         </div>
         
@@ -239,7 +237,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(126.5, 202.0, this)">
-            <span class="label">Charanam 1</span>
+            <span class="label">Charanam 2</span>
             <span class="time">02:06 - 03:22</span>
         </div>
         
@@ -249,7 +247,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(235.5, 351.5, this)">
-            <span class="label">Charanam 2</span>
+            <span class="label">Charanam 3</span>
             <span class="time">03:55 - 05:51</span>
         </div>
         </div></div>
@@ -257,23 +255,21 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
-                <source src="ghallu_ghallu_SAM/song.mp3" type="audio/mpeg">
+                <source src="data/ghallu_ghallu_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
             <audio controls>
-                <source src="ghallu_ghallu_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
-                <source src="ghallu_ghallu_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+                <source src="data/ghallu_ghallu_SAM/separated/sam/song/vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
             <audio controls>
-                <source src="ghallu_ghallu_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
-                <source src="ghallu_ghallu_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+                <source src="data/ghallu_ghallu_SAM/separated/sam/song/no_vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-sam">
@@ -283,7 +279,7 @@
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(3.0, 22.0, this)">
-            <span class="label">Pallavi</span>
+            <span class="label">Humming / Alaap</span>
             <span class="time">00:03 - 00:22</span>
         </div>
         
@@ -293,7 +289,7 @@
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(37.0, 103.5, this)">
-            <span class="label">Charanam 1</span>
+            <span class="label">Pallavi</span>
             <span class="time">00:37 - 01:43</span>
         </div>
         
@@ -303,7 +299,7 @@
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(118.5, 351.5, this)">
-            <span class="label">Charanam 2</span>
+            <span class="label">Charanam 1</span>
             <span class="time">01:58 - 05:51</span>
         </div>
         </div></div>

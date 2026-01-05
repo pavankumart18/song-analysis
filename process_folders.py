@@ -4,9 +4,14 @@ import sys
 
 def main():
     root_dir = os.path.dirname(os.path.abspath(__file__))
-    # Iterate over subdirectories
-    for item in os.listdir(root_dir):
-        folder_path = os.path.join(root_dir, item)
+    data_dir = os.path.join(root_dir, "data")
+    if not os.path.exists(data_dir):
+        print("Data directory not found.")
+        return
+
+    # Iterate over subdirectories in data
+    for item in os.listdir(data_dir):
+        folder_path = os.path.join(data_dir, item)
         if os.path.isdir(folder_path):
             song_path = os.path.join(folder_path, "song.mp3")
             if os.path.exists(song_path):

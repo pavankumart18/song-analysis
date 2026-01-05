@@ -1,26 +1,71 @@
-# Python Source Code (Not used for display)
-*.py
+# Allow all code and docs
+!*.py
+!*.html
+!*.js
+!*.css
+!*.md
+!*.json
+!*.txt
+!*.mp3
+
+# Exclude all data by default
+data/*
+
+# Ignore heavy artifacts / intermediate steps anywhere
+*.wav
+chunk_*
+**/segmented_parts/
+**/temp/
+**/chunks/
+**/*reconstructed*
+**/*restructured*
+**/__pycache__/
+
+# Allow specific songs (Whitelisted for index.html), but apply above ignores
+!data/ghallu_ghallu_Demucs/
+!data/ghallu_ghallu_Manual/
+!data/ghallu_ghallu_SAM/
+
+!data/Mari_Antaga_SVSC_Movie_Demucs/
+!data/Mari_Antaga_SVSC_Movie_Manual/
+!data/Mari_Antaga_SVSC_Movie_SAM/
+
+!data/Naa_Autograph_Sweet_Memories_Demucs/
+!data/Naa_Autograph_Sweet_Memories_Manual/
+!data/Naa_Autograph_Sweet_Memories_SAM/
+
+!data/Narasimha_-_Narasimha_Demucs/
+!data/Narasimha_-_Narasimha_Manual/
+!data/Narasimha_-_Narasimha_SAM/
+
+!data/Narasimha_Yekku_Tholi_Mettu_Demucs/
+!data/Narasimha_Yekku_Tholi_Mettu_Manual/
+!data/Narasimha_Yekku_Tholi_Mettu_SAM/
+
+!data/Nuvvostanante_Nenoddantana_s_Demucs/
+!data/Nuvvostanante_Nenoddantana_s_Manual/
+!data/Nuvvostanante_Nenoddantana_s_SAM/
+
+!data/Oh_Sita_Hey_Rama_Demucs/
+!data/Oh_Sita_Hey_Rama_Manual/
+!data/Oh_Sita_Hey_Rama_SAM/
+
+!data/Pilichina_Ranantava_Song_With_Demucs/
+!data/Pilichina_Ranantava_Song_With_Manual/
+!data/Pilichina_Ranantava_Song_With_SAM/
+
+!data/Raja_Edo_Oka_Ragam_Demucs/
+!data/Raja_Edo_Oka_Ragam_Manual/
+!data/Raja_Edo_Oka_Ragam_SAM/
+
+!data/robo_Demucs/
+!data/robo_Manual/
+!data/robo_SAM/
+
+# System and Environment
 venv/
 __pycache__/
 *.pyc
-
-# Raw Inputs and Workspaces
-songs/
-separated/
-*_Manual/
-
-# Intermediate Artifacts
-**/segmented_parts/
-**/temp/
-
-# System Files
 .DS_Store
 Thumbs.db
-desktop.ini
 
-# IDES
-.vscode/
-.idea/
-
-# Logs
-*.log

@@ -112,7 +112,7 @@
 
         </head>
         <body>
-            <a href="index.html" class="back-link">← Back to Dashboard</a>
+            <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
             <h1>Robo</h1>
             
             <div class="grid">
@@ -120,7 +120,7 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-manual" controls>
-                <source src="robo_Manual/song.mp3" type="audio/mpeg">
+                <source src="data/robo_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">13 Segments Identified</div><div class="segments-list" id="segments-manual">
@@ -193,23 +193,21 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-demucs" controls>
-                <source src="robo_Demucs/song.mp3" type="audio/mpeg">
+                <source src="data/robo_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
             <audio controls>
-                <source src="robo_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/mpeg">
-                <source src="robo_Demucs\separated\htdemucs\song\vocals.mp3" type="audio/wav">
+                <source src="data/robo_Demucs/separated/htdemucs/song/vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
             <audio controls>
-                <source src="robo_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/mpeg">
-                <source src="robo_Demucs\separated\htdemucs\song\no_vocals.mp3" type="audio/wav">
+                <source src="data/robo_Demucs/separated/htdemucs/song/no_vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">4 Segments Identified</div><div class="segments-list" id="segments-demucs">
@@ -229,7 +227,7 @@
         </div>
         
         <div class="segment" onclick="demucsPlayer.playSegment(11.0, 317.0, this)">
-            <span class="label">Pallavi</span>
+            <span class="label">Charanam</span>
             <span class="time">00:11 - 05:17</span>
         </div>
         </div></div>
@@ -237,23 +235,21 @@
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
             <audio id="audio-sam" controls>
-                <source src="robo_SAM/song.mp3" type="audio/mpeg">
+                <source src="data/robo_Manual/song.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
             <audio controls>
-                <source src="robo_SAM\separated\sam\song\vocals.wav" type="audio/mpeg">
-                <source src="robo_SAM\separated\sam\song\vocals.wav" type="audio/wav">
+                <source src="data/robo_SAM/separated/sam/song/vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
             <audio controls>
-                <source src="robo_SAM\separated\sam\song\no_vocals.wav" type="audio/mpeg">
-                <source src="robo_SAM\separated\sam\song\no_vocals.wav" type="audio/wav">
+                <source src="data/robo_SAM/separated/sam/song/no_vocals.mp3" type="audio/mpeg">
             </audio>
         </div>
         </div><div class="metrics">6 Segments Identified</div><div class="segments-list" id="segments-sam">
@@ -278,12 +274,12 @@
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(30.5, 40.0, this)">
-            <span class="label">Interlude</span>
+            <span class="label">Interlude 1</span>
             <span class="time">00:30 - 00:40</span>
         </div>
         
         <div class="segment" onclick="samPlayer.playSegment(40.0, 317.0, this)">
-            <span class="label">Charanam</span>
+            <span class="label">Charanam 1</span>
             <span class="time">00:40 - 05:17</span>
         </div>
         </div></div>

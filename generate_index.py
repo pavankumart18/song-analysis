@@ -8,7 +8,7 @@ def generate_index():
     grouped_songs = {}
 
     # Scan directories
-    for item in base_path.iterdir():
+    for item in (base_path / "data").iterdir():
         if item.is_dir():
             player_file = item / "song_player.html"
             if player_file.exists():
