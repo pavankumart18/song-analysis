@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 # --- Configuration ---
-BASE_DIR = Path(r"c:\Users\admin\Desktop\song analysis")
+BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 METRICS_CSV = DATA_DIR / "advanced_metrics.csv"
 CONFUSION_CSV = DATA_DIR / "Confusion_Proof_Log.csv"

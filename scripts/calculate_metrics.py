@@ -3,8 +3,9 @@ import os
 from pathlib import Path
 
 # Config
-BASE_DIR = Path(r"c:\Users\admin\Desktop\song analysis\data")
-OUTPUT_JSON = Path(r"c:\Users\admin\Desktop\song analysis\data\quantitative_analysis.json")
+SCRIPT_DIR = Path(__file__).resolve().parent
+BASE_DIR = SCRIPT_DIR.parent / "data"
+OUTPUT_JSON = BASE_DIR / "quantitative_analysis.json"
 
 def load_json(path):
     try:

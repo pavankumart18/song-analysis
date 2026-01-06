@@ -4,7 +4,8 @@ import pandas as pd
 from pathlib import Path
 
 # Config
-BASE_DIR = Path(r"c:\Users\admin\Desktop\song analysis\data")
+SCRIPT_DIR = Path(__file__).resolve().parent
+BASE_DIR = SCRIPT_DIR.parent / "data"
 OUTPUT_CSV = BASE_DIR / "Confusion_Proof_Log.csv"
 OUTPUT_REPORT = BASE_DIR / "Confusion_Analysis_Report.md"
 

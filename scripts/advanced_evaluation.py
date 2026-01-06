@@ -9,8 +9,14 @@ import datetime
 
 # --- Configuration ---
 IOU_THRESHOLDS = [0.3, 0.5, 0.7]
+IOU_MATCH_THRESHOLD = 0.1
 MIN_DURATION = 0.2  # Seconds (Filter out noise)
-DEFAULT_DATA_DIR = Path(r"c:\Users\admin\Desktop\song analysis\data")
+
+# Dynamic Base Dir
+SCRIPT_DIR = Path(__file__).resolve().parent
+BASE_DIR = SCRIPT_DIR.parent
+DEFAULT_DATA_DIR = BASE_DIR / "data"
+
 OUTPUT_JSON = DEFAULT_DATA_DIR / "advanced_metrics.json"
 OUTPUT_CSV = DEFAULT_DATA_DIR / "advanced_metrics.csv"
 OUTPUT_REPORT = DEFAULT_DATA_DIR / "Quantitative_Summary.md"
@@ -143,24 +149,34 @@ def evaluate_song(manual_segs, pred_segs):
     ]
     vocals_fp_duration = 0.0
     total_instr_duration = sum(end - start for start, end in manual_intervals_instr)
+    manual_instr_count = len(manual_intervals_instr)
+    bad_pred_count = 0 
     
     for p in pred_vocals:
         p_start, p_end = p['start'], p['end']
         current_p_fp = 0.0
+        is_bad = False
+        
         for m_s, m_e in manual_intervals_instr:
             ov_s = max(p_start, m_s)
             ov_e = min(p_end, m_e)
             if ov_s < ov_e:
-                current_p_fp += (ov_e - ov_s)
+                dur = ov_e - ov_s
+                current_p_fp += dur
+                if dur > 0.5: is_bad = True # Count as bad if >0.5s overlap
+                
         vocals_fp_duration += current_p_fp
+        if is_bad: bad_pred_count += 1
 
     fpr_time = vocals_fp_duration / total_instr_duration if total_instr_duration > 0 else 0.0
+    fpr_count = bad_pred_count / manual_instr_count if manual_instr_count > 0 else 0.0
     
     # Combine
     final = {}
     final.update(struct_metrics)
     final.update(vocal_metrics)
     final["fpr_time"] = fpr_time
+    final["fpr_count"] = fpr_count
     
     return final
 
