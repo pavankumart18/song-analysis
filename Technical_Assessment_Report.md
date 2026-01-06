@@ -1,73 +1,67 @@
-# Technical Assessment Report: Evaluation of "Demucs" vs "SAM" for Indian Source Separation & Segmentation
+# Technical Assessment Report: Evaluation of Demucs vs SAM for Indian Source Separation & Segmentation
 
 ## 1. Executive Summary
 
-The comparative analysis of "Demucs" and "SAM-Audio" models for Indian music source separation and segmentation reveals distinct strengths and weaknesses. Demucs demonstrates superior stability in vocal separation and segment detection, while SAM-Audio excels in noise suppression but suffers from instrumental confusion, particularly with instruments like violins and flutes being misclassified as vocals.
+The evaluation of Demucs and SAM against the Manual Ground Truth for Indian source separation and segmentation reveals distinct strengths and weaknesses in both AI models. Demucs demonstrates superior stability and alignment with manual segmentation, particularly in vocal separation, though it occasionally includes background noise. SAM excels in noise suppression but suffers from instrumental confusion, often mistaking instruments like flutes and violins for vocals. Overall, Demucs is closer to manual quality in terms of segment count and structure detection, while SAM requires improvements in instrument differentiation.
 
 ## 2. Methodology Overview
 
-The evaluation framework involves two primary approaches: waveform-based separation (Demucs) and spectrogram/audio-embedding masking (SAM-Audio). Demucs focuses on direct waveform manipulation to isolate audio components, whereas SAM-Audio employs audio-specific embeddings and prompting to mask and separate different audio sources.
+The comparison framework employed involves two primary techniques: Waveform and Spectrogram Masking. Demucs utilizes waveform-based separation, while SAM employs spectrogram masking. Manual segmentation serves as the baseline or Ground Truth, providing a reference for evaluating the accuracy and fidelity of the AI models in detecting song structures such as Pallavi and Interludes.
 
 ## 3. Quantitative Performance Metrics
 
-| Song                          | Model  | Total Segments | Vocal Segments | Avg Segment Duration (s) | Pallavi Detected | Interludes Detected |
-|-------------------------------|--------|----------------|----------------|--------------------------|------------------|----------------------|
-| Ghallu Ghallu                 | Demucs | 8              | 4              | 43.94                    | Yes              | 3                    |
-|                               | SAM    | 6              | 3              | 58.58                    | Yes              | 2                    |
-| Mari Antaga SVSC Movie        | Demucs | 7              | 4              | 34.5                     | Yes              | 3                    |
-|                               | SAM    | 4              | 2              | 60.38                    | No               | 1                    |
-| Naa Autograph Sweet Memories  | Demucs | 7              | 3              | 38.07                    | Yes              | 2                    |
-|                               | SAM    | 8              | 4              | 33.31                    | Yes              | 3                    |
-| Narasimha - Narasimha         | Demucs | 7              | 4              | 48.0                     | Yes              | 3                    |
-|                               | SAM    | 2              | 1              | 168.0                    | No               | 0                    |
-| Nuvvostanante Nenoddantana s  | Demucs | 5              | 3              | 49.6                     | Yes              | 1                    |
-|                               | SAM    | 6              | 3              | 41.33                    | Yes              | 1                    |
-| Oh Sita Hey Rama              | Demucs | 11             | 5              | 20.5                     | Yes              | 3                    |
-|                               | SAM    | 8              | 4              | 29.19                    | Yes              | 3                    |
-| Pilichina Ranantava Song With | Demucs | 9              | 4              | 35.28                    | Yes              | 3                    |
-|                               | SAM    | 9              | 4              | 35.28                    | Yes              | 4                    |
-| Raja Edo Oka Ragam            | Demucs | 7              | 3              | 37.71                    | Yes              | 3                    |
-|                               | SAM    | 3              | 1              | 88.0                     | No               | 1                    |
-| Robo                          | Demucs | 4              | 2              | 79.25                    | No               | 0                    |
-|                               | SAM    | 6              | 3              | 52.83                    | Yes              | 1                    |
+| Song                             | Manual (GT) | Demucs | SAM  |
+|----------------------------------|-------------|--------|------|
+| Ghallu Ghallu                    | 13          | 8      | 6    |
+| Mari Antaga SVSC Movie           | 9           | 7      | 4    |
+| Naa Autograph Sweet Memories     | 13          | 7      | 8    |
+| Narasimha - Narasimha            | 7           | 7      | 2    |
+| Narasimha Yekku Tholi Mettu      | 11          | 7      | 2    |
+| Nuvvostanante Nenoddantana       | 13          | 5      | 6    |
+| Oh Sita Hey Rama                 | 8           | 11     | 8    |
+| Pilichina Ranantava Song With    | 11          | 9      | 9    |
+| Raja Edo Oka Ragam               | 9           | 7      | 3    |
+| Robo                             | 13          | 4      | 6    |
 
-### Key Observations:
-- SAM consistently under-segments compared to Demucs, particularly in songs like "Narasimha - Narasimha" and "Raja Edo Oka Ragam".
-- Demucs shows higher consistency in detecting Pallavi and interludes across the dataset.
+**Discrepancies**: SAM consistently under-segments compared to Manual, particularly evident in songs like "Narasimha - Narasimha" and "Narasimha Yekku Tholi Mettu". Demucs generally aligns more closely with Manual segment counts but occasionally over-segments, as seen in "Oh Sita Hey Rama".
 
 ## 4. Qualitative Error Analysis (Thematic)
 
 ### Spectral Confusion
-Both models exhibit spectral confusion, particularly with instruments like violins and flutes being misclassified as vocals. This is more pronounced in SAM, likely due to its smaller model size and limited training data diversity.
+Both Demucs and SAM exhibit issues with spectral confusion, particularly in distinguishing between vocals and instruments such as violins and flutes. This confusion is more pronounced in SAM, which often misclassifies instrumental sounds as vocals, impacting the accuracy of vocal segment detection.
 
 ### VAD Sensitivity
-SAM demonstrates better noise suppression capabilities, effectively reducing background noise. However, this comes at the cost of misclassifying certain instrumental sounds as vocals, affecting the signal-to-noise ratio adversely.
+Voice Activity Detection (VAD) sensitivity varies between the models. Demucs tends to include more background noise within vocal segments, whereas SAM is more effective at noise suppression. However, SAM's aggressive noise reduction sometimes leads to the misclassification of instrumental sounds as vocals.
 
 ### Structural Integrity
-Errors in spectral confusion and VAD sensitivity impact the structural integrity of song labeling, particularly in distinguishing Pallavi and Charanam sections. Demucs, while more stable, occasionally merges segments due to background noise misclassification.
+Demucs generally captures the Manual structure more faithfully, detecting Pallavi and Interludes with higher accuracy. SAM struggles with structural integrity, often failing to detect key song structures, as seen in "Mari Antaga SVSC Movie" and "Narasimha - Narasimha".
 
 ## 5. Song-Specific Technical Audit
 
 ### Ghallu Ghallu
-- **Issue**: Instrumental confusion, particularly with flutes.
-- **Root Cause**: Model size and training data limitations.
-- **Impact**: Minor.
-
-### Mari Antaga SVSC Movie
-- **Issue**: Background noise inclusion by Demucs.
-- **Root Cause**: Waveform-based separation limitations.
-- **Impact**: Minor.
-
-### Narasimha - Narasimha
-- **Issue**: SAM's failure to detect vocals and interludes.
-- **Root Cause**: Spectrogram masking inefficiencies.
+- **Segments**: Manual - 13, Demucs - 8, SAM - 6
+- **Issue**: Under-segmentation by SAM.
+- **Root Cause**: Instrumental confusion and model size limitations.
 - **Impact**: Critical.
 
 ### Robo
-- **Issue**: Misclassification of continuous lyrics as vocals by Demucs.
-- **Root Cause**: Signal continuity in waveform analysis.
-- **Impact**: Minor.
+- **Segments**: Manual - 13, Demucs - 4, SAM - 6
+- **Issue**: Significant under-segmentation by Demucs.
+- **Root Cause**: Continuous signal misinterpretation.
+- **Impact**: Critical.
+
+### Nuvvostanante Nenoddantana
+- **Segments**: Manual - 13, Demucs - 5, SAM - 6
+- **Issue**: Under-segmentation by both models.
+- **Root Cause**: Difficulty in differentiating humming from vocals.
+- **Impact**: Critical.
+
+### Narasimha - Narasimha
+- **Segments**: Manual - 7, Demucs - 7, SAM - 2
+- **Issue**: Severe under-segmentation by SAM.
+- **Root Cause**: Inadequate model training for complex vocal-instrument differentiation.
+- **Impact**: Critical.
 
 ## 6. Recommendations
 
-For optimal performance in the production pipeline, it is recommended to integrate Demucs for its stability in segment detection and vocal separation. However, enhancements in noise suppression should be considered, potentially by incorporating elements from SAM's spectrogram masking approach. Additionally, addressing the spectral confusion in both models through expanded training datasets and model refinement is crucial to improve accuracy in instrumental differentiation.
+For the production pipeline, Demucs is recommended as the primary model for source separation and segmentation due to its closer alignment with manual segmentation and structural integrity. Enhancements in noise suppression and labeling accuracy are advised. SAM requires significant improvements in instrument differentiation and structural detection before it can be considered a reliable alternative. Further training with diverse datasets may enhance SAM's performance in these areas.

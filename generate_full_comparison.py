@@ -156,14 +156,25 @@ def format_time(seconds):
     s = int(seconds % 60)
     return f"{m:02d}:{s:02d}"
 
-def render_column(version_name, class_name, folder_path, base_path):
+def render_column(version_name, class_name, folder_path, base_path, metrics_data=None):
     """
     Renders the HTML for a single column (Manual, Demucs, or SAM).
     """
     col_id = version_name.lower()
     
     html = f'<div class="col {class_name}">'
-    html += f'<div class="col-header">{version_name}</div>'
+    
+    # Header with Metrics
+    stats_html = ""
+    if metrics_data and "metrics" in metrics_data:
+        m = metrics_data["metrics"]
+        stats_html = f"""
+        <div class="metric-header">
+            Mean IoU: {m.get('mean_iou', 0):.2f} | FPR: {m.get('fpr', 0):.1%}
+        </div>
+        """
+        
+    html += f'<div class="col-header">{version_name}{stats_html}</div>'
     
     if not folder_path:
         html += '<div class="empty-state">Data Not Available</div>'
@@ -172,36 +183,13 @@ def render_column(version_name, class_name, folder_path, base_path):
 
     folder = Path(folder_path)
     
-    # 1. Main Analysis Audio (Vocals usually, for manual checking segments)
-    # The existing player logic uses playSegment(), which expects one "Main" audio.
-    # For Manual: song.mp3 (Full song)
-    # For Demucs/SAM: They also have song.mp3 (Full song)
-    # BUT, the user wants "Raw Outputs" (Separated Stems) visible.
-    
-    # Let's find the stems!
-    # Common path: separated/htdemucs/song/vocals.mp3 or separated/sam/song/vocals.wav
-    
+    # ... Finding Audio Logic (Same as before) ...
     vocals_rel = ""
     novocals_rel = ""
-    
-    # Search for stems
-    for root, dirs, files in folder.walk(): # walk is 3.12+, let's use rglob
-        pass
-    
-    # Simplified search:
-    # Look for 'separated' dir
     sep_dir = folder / "separated"
     if sep_dir.exists():
-        # Demucs: separated/htdemucs/song/vocals.mp3
-        # SAM: separated/sam/song/vocals.wav
-        
-        # Try finding vocals.* and no_vocals.*
-        # Prioritize MP3 over WAV
-        
         def find_best_audio(candidates):
-            if not candidates:
-                return None
-            # Sort: mp3 first, then others
+            if not candidates: return None
             candidates.sort(key=lambda p: (p.suffix != '.mp3', p.name))
             return candidates[0]
             
@@ -210,37 +198,21 @@ def render_column(version_name, class_name, folder_path, base_path):
         
         best_voc = find_best_audio(voc_candidates)
         if best_voc:
-            try:
-                # IMPORTANT: path in HTML must be relative to base_path (Desktop/song analysis)
-                # Currently data is in base_path/data/song/....
-                # If HTML is in base_path, rel path is data/song/...
-                vocals_rel = best_voc.relative_to(base_path).as_posix()
-            except ValueError: pass
+             try: vocals_rel = best_voc.relative_to(base_path).as_posix()
+             except: pass
             
         best_novoc = find_best_audio(novoc_candidates)
         if best_novoc:
-            try:
-                novocals_rel = best_novoc.relative_to(base_path).as_posix()
-            except ValueError: pass
-    
-    # Main Audio for Segment Clicking
-    # Find the Master Song for this group logic:
-    # The folders are siblings: X_Manual, X_Demucs, X_SAM
-    # We are in 'folder' (e.g. X_Demucs). We want X_Manual/song.mp3 if it exists.
+            try: novocals_rel = best_novoc.relative_to(base_path).as_posix()
+            except: pass
     
     main_audio_rel = ""
-    
-    # Check if this folder HAS the song (Manual usually does)
     local_song = folder / "song.mp3"
     
     if local_song.exists():
-        try:
-            main_audio_rel = local_song.relative_to(base_path).as_posix()
+        try: main_audio_rel = local_song.relative_to(base_path).as_posix()
         except: pass
     else:
-        # Look for sibling folders with "_Manual" suffix corresponding to this one
-        # Current folder name: e.g. "ghallu_ghallu_Demucs"
-        # Base name: "ghallu_ghallu"
         name = folder.name
         base_name = ""
         if "_Demucs" in name: base_name = name.replace("_Demucs", "")
@@ -248,20 +220,15 @@ def render_column(version_name, class_name, folder_path, base_path):
         elif "_Manual" in name: base_name = name.replace("_Manual", "")
         
         if base_name:
-            # Try finding Manual sibling
             manual_sib = folder.parent / f"{base_name}_Manual" / "song.mp3"
             if manual_sib.exists():
-                 try:
-                    main_audio_rel = manual_sib.relative_to(base_path).as_posix()
+                 try: main_audio_rel = manual_sib.relative_to(base_path).as_posix()
                  except: pass
             else:
-                 # Fallback: check Demucs/SAM siblings if we are in something else and Manual is missing
-                 # (Edge case, but good to handle)
                  for suffix in ["_Demucs", "_SAM", "_Manual"]:
                      sib = folder.parent / f"{base_name}{suffix}" / "song.mp3"
                      if sib.exists():
-                        try:
-                            main_audio_rel = sib.relative_to(base_path).as_posix()
+                        try: main_audio_rel = sib.relative_to(base_path).as_posix()
                         except: pass
                         break
 
@@ -272,19 +239,15 @@ def render_column(version_name, class_name, folder_path, base_path):
         try:
             with open(structure_file, 'r') as f:
                 structure = json.load(f)
-        except:
-            pass
+        except: pass
 
     # --- HTML RENDER ---
     html += '<div class="player-section">'
     
-    # 1. Main Player (For Segments)
+    # 1. Main Player
     if main_audio_rel:
-        # Check if mp3
         mime = "audio/wav"
-        if main_audio_rel.endswith(".mp3"):
-            mime = "audio/mpeg"
-            
+        if main_audio_rel.endswith(".mp3"): mime = "audio/mpeg"
         html += f"""
         <div>
             <span class="player-label">Full Song (Active for Segments)</span>
@@ -296,15 +259,13 @@ def render_column(version_name, class_name, folder_path, base_path):
     else:
         html += '<div style="color:#f44">Full Audio Missing</div>'
         
-    # 2. Raw Stems (If available)
+    # 2. Raw Stems
     if vocals_rel:
         v_mime = "audio/mpeg" if vocals_rel.endswith(".mp3") else "audio/wav"
         html += f"""
         <div style="margin-top:10px; border-top:1px dashed #333; padding-top:10px;">
             <span class="player-label">Raw Vocals (Stem)</span>
-            <audio controls>
-                <source src="{vocals_rel}" type="{v_mime}">
-            </audio>
+            <audio controls><source src="{vocals_rel}" type="{v_mime}"></audio>
         </div>
         """
         
@@ -313,19 +274,26 @@ def render_column(version_name, class_name, folder_path, base_path):
         html += f"""
         <div>
             <span class="player-label">No Vocals (Instrumental)</span>
-            <audio controls>
-                <source src="{novocals_rel}" type="{nv_mime}">
-            </audio>
+            <audio controls><source src="{novocals_rel}" type="{nv_mime}"></audio>
         </div>
         """
-        
-    html += '</div>' # End player section
+    html += '</div>' 
 
-    # 3. Metrics (Count)
+    # 3. Metrics
     html += f'<div class="metrics">{len(structure)} Segments Identified</div>'
 
     # 4. Segments List
     html += f'<div class="segments-list" id="segments-{col_id}">'
+    
+    # Prepare segment metrics lookups
+    seg_metrics_lookup = {}
+    if metrics_data and "segments" in metrics_data:
+        # Index by start time (approximate) to avoid O(N^2) although N is small
+        for sm in metrics_data["segments"]:
+            # Rounding to 1 decimal place for matching
+            k = round(sm['start'], 1)
+            seg_metrics_lookup[k] = sm
+
     for seg in structure:
         start = seg.get('start', 0)
         end = seg.get('end', 0)
@@ -334,28 +302,60 @@ def render_column(version_name, class_name, folder_path, base_path):
         
         onclick = f"{col_id}Player.playSegment({start}, {end}, this)"
         
+        # Metric Badge
+        badge_html = ""
+        metric = seg_metrics_lookup.get(round(start, 1))
+        
+        # If not found exact match, try fuzzy search in list
+        if not metric and metrics_data:
+             for sm in metrics_data["segments"]:
+                 if abs(sm['start'] - start) < 0.2:
+                     metric = sm
+                     break
+        
+        if metric:
+            iou = metric['iou']
+            err = metric.get('error_type')
+            
+            cls = "badge-gray"
+            if iou > 0.7: cls = "badge-good"
+            elif iou > 0.4: cls = "badge-warn"
+            else: cls = "badge-bad"
+            
+            icon = ""
+            if err == "Confusion": icon = "⚠️ "
+            elif err == "Hallucination": icon = "👻 "
+            
+            badge_html = f'<span class="badge {cls}">{icon}IoU: {iou}</span>'
+
         html += f"""
         <div class="segment" onclick="{onclick}">
-            <span class="label">{label}</span>
-            <span class="time">{format_time(start)} - {format_time(end)}</span>
+            <div style="display:flex; justify-content:space-between; width:100%;">
+                <span class="label">{label}{badge_html}</span>
+                <span class="time">{format_time(start)} - {format_time(end)}</span>
+            </div>
         </div>
         """
     html += '</div>' # End list
-
     html += '</div>' # End Col
     return html
 
 def generate_comparison_pages():
     base_path = Path(r"c:\Users\admin\Desktop\song analysis")
     
+    # Load Metrics
+    metrics_path = base_path / "data" / "quantitative_analysis.json"
+    qa_data = {}
+    if metrics_path.exists():
+        with open(metrics_path, 'r') as f:
+            qa_data = json.load(f)
+
     # 1. Group Songs
-    grouped_songs = {} # { "Display Title": { "Manual": path, "Demucs": path, "SAM": path } }
+    grouped_songs = {}
     
     for item in (base_path / "data").iterdir():
         if item.is_dir():
             name = item.name
-            
-            # Identify variant
             variant = None
             title_key = None
             
@@ -368,26 +368,27 @@ def generate_comparison_pages():
             elif name.endswith("_SAM"):
                 variant = "SAM"
                 title_key = name[:-4]
-            else:
-                continue
+            else: continue
                 
             display_title = title_key.replace("_", " ").title()
-            
+            # Store raw key too for metrics lookup
             if display_title not in grouped_songs:
-                grouped_songs[display_title] = {}
+                grouped_songs[display_title] = { "raw_key": title_key }
             
             grouped_songs[display_title][variant] = item
 
-    # 2. Generate Comparison HTML for each Group
+    # 2. Generate Comparison HTML
     for title, variants in grouped_songs.items():
         print(f"Generating comparison for: {title}")
+        raw_key = variants.get("raw_key")
         
-        # Paths to pass to renderer
         manual_path = variants.get("Manual")
         demucs_path = variants.get("Demucs")
         sam_path    = variants.get("SAM")
         
-        # Safe filename for the html
+        # Get metrics for this song
+        song_metrics = qa_data.get(raw_key, {})
+        
         safe_name = title.replace(" ", "_")
         html_filename = base_path / f"compare_{safe_name}.html"
         
@@ -399,15 +400,22 @@ def generate_comparison_pages():
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>{title} - Comparison</title>
             {CSS}
+            <style>
+                .badge {{ font-size: 0.7em; padding: 2px 6px; border-radius: 4px; margin-left:8px; font-weight:bold; }}
+                .badge-good {{ background: #10b981; color: #fff; }}
+                .badge-warn {{ background: #f59e0b; color: #fff; }}
+                .badge-bad {{ background: #ef4444; color: #fff; }}
+                .metric-header {{ font-size: 0.8em; color: #888; margin-top: 5px; }}
+            </style>
         </head>
         <body>
             <a href="index.html" class="back-link">← Back to Dashboard</a>
             <h1>{title}</h1>
             
             <div class="grid">
-                {render_column("Manual", "manual-col", manual_path, base_path)}
-                {render_column("Demucs", "demucs-col", demucs_path, base_path)}
-                {render_column("SAM", "sam-col", sam_path, base_path)}
+                {render_column("Manual", "manual-col", manual_path, base_path, None)}
+                {render_column("Demucs", "demucs-col", demucs_path, base_path, song_metrics.get("Demucs"))}
+                {render_column("SAM", "sam-col", sam_path, base_path, song_metrics.get("SAM"))}
             </div>
             
             {JS_TEMPLATE}
@@ -418,7 +426,7 @@ def generate_comparison_pages():
         with open(html_filename, 'w', encoding='utf-8') as f:
             f.write(html_content)
 
-    # 3. Update Index to Point to these pages
+    # 3. Update Index
     update_index_with_comparisons(grouped_songs, base_path)
 
 def update_index_with_comparisons(grouped_songs, base_path):
@@ -434,6 +442,7 @@ def update_index_with_comparisons(grouped_songs, base_path):
         has_manual = "Manual" in variants
         has_demucs = "Demucs" in variants
         has_sam = "SAM" in variants
+
         
         def tag(label, active, color):
             op = "1" if active else "0.2"
