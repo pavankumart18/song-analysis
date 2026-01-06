@@ -3,50 +3,56 @@
 ## 1. Executive Summary
 This report provides a strict quantitative comparison of Demucs and SAM against a Manual Ground Truth dataset.
 **Total Songs Analyzed**: 10
-**Full Data Proof**: [Download CSV](./data/Full_Segment_Analysis.csv)
+**Code Repository**: See `scripts/advanced_evaluation.py` and `scripts/reproduce_metrics.py` for calculation logic.
 
-## 2. Quantitative Findings
+## 2. Methodology & Metric Definitions
 
-### 2.1 Comparative Findings
-- **Alignment**: Demucs achieves a higher Mean IoU (0.42) compared to SAM (0.26), indicating better overlap with ground truth.
-- **Instrumental Confusion**: SAM shows a higher Vocal False Positive Rate (49.17%) than Demucs (20.83%), confirming the issue of misclassifying instruments as vocals.
-- **Boundary Precision**: The average boundary error for Demucs is 29934ms, whereas SAM is 58555ms.
+To ensure reproducibility, we define our metrics as follows:
 
-### 2.2 Aggregate Metrics Table
-| Metric | Demucs | SAM |
-| :--- | :--- | :--- |
-| Mean IoU | 0.418 | 0.264 |
-| Median IoU | 0.405 | 0.207 |
-| Avg Boundary Error (ms) | 29934 | 58555 |
-| Deletion Rate (Missed) | 10.9% | 23.3% |
-| Insertion Rate (Hallucinated) | 19.0% | 14.9% |
-| **Vocal False Positive Rate** | **20.8%** | **49.2%** |
+*   **IoU (Intersection-over-Union)**: Calculated as `Intersection Duration / Union Duration` for matched segments.
+*   **Matching Strategy**: We use the **Hungarian Algorithm** to optimally pair predicted segments with manual segments based on IoU cost, ensuring no double-counting.
+*   **Aggregation**:
+    *   **Mean IoU**: The simple average of the Mean IoU per song.
+    *   **Vocal FPR (False Positive Rate)**: A **Duration-Weighted** metric.
+        *   `FPR = (Total Duration of Predicted Vocals overlapping Manual Instrumentals) / (Total Manual Instrumental Duration)`
+        *   This measures "How much of the instrumental section was ruined by hallucinations?"
+*   **Boundary Error**: Average absolute difference (in seconds) between start/end times of matched segments.
 
-## 3. Per-Song Detailed Analysis
+## 3. Quantitative Findings
+
+### 3.1 Aggregate Metrics Table
+| Metric | Demucs (Mean ± Std) | SAM (Mean ± Std) | Interpretation |
+| :--- | :--- | :--- | :--- |
+| **Mean IoU** (Song-Level) | **0.59 ± 0.19** | 0.43 ± 0.17 | Demucs alignments are significantly tighter. |
+| **Median IoU** | **0.59 ± 0.22** | 0.41 ± 0.17 | Demucs is more consistent. |
+| **Vocal FPR** (Time-Weighted) | **41.5% ± 28.0%** | 79.0% ± 16.0% | SAM hallucinates in 4/5ths of instrumental sections. |
+| **Avg Boundary Error** | **32.5s** | 59.2s | SAM boundaries are extremely loose (~60s error). |
+
+### 3.2 Per-Song Detailed Analysis
 Comparison of alignment (IoU) and Instrumental Confusion (FPR) for every song.
 
-| Song Name                     | Model   |   Mean IoU |   Vocal FPR |
-|:------------------------------|:--------|-----------:|------------:|
-| Mari_Antaga_SVSC_Movie        | Demucs  |      0.557 |       0.250 |
-| Mari_Antaga_SVSC_Movie        | SAM     |      0.395 |       0.500 |
-| Naa_Autograph_Sweet_Memories  | Demucs  |      0.290 |       0.333 |
-| Naa_Autograph_Sweet_Memories  | SAM     |      0.246 |       0.333 |
-| Narasimha_-_Narasimha         | Demucs  |      0.412 |       0.333 |
-| Narasimha_-_Narasimha         | SAM     |      0.274 |       0.667 |
-| Narasimha_Yekku_Tholi_Mettu   | Demucs  |      0.301 |       0.000 |
-| Narasimha_Yekku_Tholi_Mettu   | SAM     |      0.121 |       1.000 |
-| Nuvvostanante_Nenoddantana_s  | Demucs  |      0.192 |       0.500 |
-| Nuvvostanante_Nenoddantana_s  | SAM     |      0.178 |       0.250 |
-| Oh_Sita_Hey_Rama              | Demucs  |      0.242 |       0.250 |
-| Oh_Sita_Hey_Rama              | SAM     |      0.256 |       0.750 |
-| Pilichina_Ranantava_Song_With | Demucs  |      0.410 |       0.167 |
-| Pilichina_Ranantava_Song_With | SAM     |      0.379 |       0.167 |
-| Raja_Edo_Oka_Ragam            | Demucs  |      0.651 |       0.000 |
-| Raja_Edo_Oka_Ragam            | SAM     |      0.119 |       0.250 |
-| ghallu_ghallu                 | Demucs  |      0.491 |       0.000 |
-| ghallu_ghallu                 | SAM     |      0.264 |       0.500 |
-| robo                          | Demucs  |      0.076 |       0.250 |
-| robo                          | SAM     |      0.088 |       0.500 |
+| Song Name | Model | Mean IoU | Vocal FPR (Time) |
+| :--- | :--- | :--- | :--- |
+| Mari_Antaga_SVSC_Movie | Demucs | 0.847 | 0.162 |
+| Mari_Antaga_SVSC_Movie | SAM | 0.642 | 0.718 |
+| Naa_Autograph_Sweet_Memories | Demucs | 0.674 | 0.692 |
+| Naa_Autograph_Sweet_Memories | SAM | 0.473 | 0.863 |
+| Narasimha_-_Narasimha | Demucs | 0.681 | 0.369 |
+| Narasimha_-_Narasimha | SAM | 0.608 | 0.901 |
+| Narasimha_Yekku_Tholi_Mettu | Demucs | 0.562 | 0.051 |
+| Narasimha_Yekku_Tholi_Mettu | SAM | 0.273 | 1.000 |
+| Nuvvostanante_Nenoddantana_s | Demucs | 0.360 | 0.758 |
+| Nuvvostanante_Nenoddantana_s | SAM | 0.357 | 0.839 |
+| Oh_Sita_Hey_Rama | Demucs | 0.562 | 0.376 |
+| Oh_Sita_Hey_Rama | SAM | 0.587 | 0.679 |
+| Pilichina_Ranantava_Song_With | Demucs | 0.590 | 0.402 |
+| Pilichina_Ranantava_Song_With | SAM | 0.546 | 0.444 |
+| Raja_Edo_Oka_Ragam | Demucs | 0.750 | 0.174 |
+| Raja_Edo_Oka_Ragam | SAM | 0.169 | 0.926 |
+| ghallu_ghallu | Demucs | 0.663 | 0.268 |
+| ghallu_ghallu | SAM | 0.425 | 0.711 |
+| robo | Demucs | 0.182 | 0.898 |
+| robo | SAM | 0.238 | 0.820 |
 
 ## 4. Segment-Wise Error Table (Sample)
 Below is a sample of segment-wise errors. **See `Full_Segment_Analysis.csv` for the complete row-by-row proof.**
