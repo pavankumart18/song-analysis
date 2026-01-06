@@ -401,7 +401,7 @@ def generate_comparison_pages():
             {CSS}
         </head>
         <body>
-            <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
             <h1>{title}</h1>
             
             <div class="grid">
@@ -484,9 +484,9 @@ def update_index_with_comparisons(grouped_songs, base_path):
 </html>
     """
     
-    with open(base_path / "dashboard.html", "w", encoding='utf-8') as f:
+    with open(base_path / "index.html", "w", encoding='utf-8') as f:
         f.write(index_html)
-    print("Dashboard updated.")
+    print("Index updated.")
 
 if __name__ == "__main__":
     generate_comparison_pages()

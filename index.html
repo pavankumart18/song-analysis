@@ -1,596 +1,109 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Ghost in the Machine: AI & Indian Music</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;600&display=swap"
-        rel="stylesheet">
+    <title>Indian Music Intel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #050505;
-            --text: #e0e0e0;
-            --accent-gradient: linear-gradient(135deg, #FF6B6B 0%, #ff4757 100%);
-            --glass-surface: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --demucs: #d946ef;
-            --sam: #6366f1;
+        body { background: #0a0a0c; color: #eee; font-family: 'Outfit', sans-serif; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        h1 { margin-bottom: 40px; font-weight: 300; letter-spacing: 1px; }
+        .list { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
+        .song-card {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; text-decoration: none; color: inherit;
+            display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.2s;
         }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg);
-            background-image:
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(255, 71, 87, 0.15) 0px, transparent 50%);
-            background-attachment: fixed;
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            line-height: 1.8;
-            overflow-x: hidden;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            margin-top: 0;
-        }
-
-        /* Hero Section */
-        header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 71, 87, 0.08) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .hero-title {
-            font-size: 6rem;
-            line-height: 1.1;
-            margin: 0;
-            background: linear-gradient(to bottom, #fff, #aaa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeIn 1.5s ease-out;
-            letter-spacing: -2px;
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: #888;
-            margin-top: 30px;
-            font-weight: 300;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            animation: fadeIn 2.5s ease-out;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            opacity: 0.5;
-            animation: fadeIn 3s ease-out;
-        }
-
-        .mouse {
-            width: 26px;
-            height: 40px;
-            border: 2px solid #fff;
-            border-radius: 20px;
-            position: relative;
-        }
-
-        .wheel {
-            width: 4px;
-            height: 8px;
-            background: #fff;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 6px;
-            border-radius: 2px;
-            animation: scroll 2s infinite;
-        }
-
-        @keyframes scroll {
-            0% {
-                top: 6px;
-                opacity: 1;
-            }
-
-            100% {
-                top: 18px;
-                opacity: 0;
-            }
-        }
-
-        /* Story Container */
-        .story-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 150px 20px;
-            position: relative;
-        }
-
-        .chapter {
-            margin-bottom: 200px;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .chapter.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .chapter-num {
-            font-size: 0.9rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .chapter-title {
-            font-size: 3.5rem;
-            margin-bottom: 40px;
-            line-height: 1.2;
-            background: linear-gradient(90deg, #fff, #ccc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p {
-            font-size: 1.35rem;
-            margin-bottom: 2rem;
-            color: #b0b0b0;
-            font-weight: 300;
-        }
-
-        strong {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        /* Glass Components */
-        .viz-box {
-            background: var(--glass-surface);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 50px;
-            margin: 60px 0;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Pipeline Flow */
-        .pipeline-flow {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            padding: 20px 0;
-        }
-
-        .pipeline-flow::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #333, transparent);
-            z-index: 0;
-        }
-
-        .step {
-            position: relative;
-            z-index: 1;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            width: 140px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: transform 0.3s, border-color 0.3s;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .step:hover {
-            transform: translateY(-5px);
-            border-color: #666;
-        }
-
-        .step.demucs-step {
-            border-color: var(--demucs);
-            color: var(--demucs);
-            box-shadow: 0 0 20px rgba(217, 70, 239, 0.1);
-        }
-
-        .step.llm-step {
-            border-color: #34d399;
-            color: #34d399;
-            box-shadow: 0 0 20px rgba(52, 211, 153, 0.1);
-        }
-
-        /* Comparison Cards */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .model-card {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid var(--glass-border);
-            transition: 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .model-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .model-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-        }
-
-        .demucs-card::after {
-            background: var(--demucs);
-        }
-
-        .sam-card::after {
-            background: var(--sam);
-        }
-
-        .model-name {
-            font-size: 1.8rem;
-            font-family: 'Playfair Display';
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .model-desc {
-            font-size: 1.1rem;
-            color: #999;
-            margin: 0;
-        }
-
-        /* Stats Table */
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .stats-table th {
-            color: #666;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: left;
-            padding: 20px;
-            border-bottom: 1px solid #333;
-        }
-
-        .stats-table td {
-            padding: 20px;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #222;
-        }
-
-        .val-high {
-            color: #34d399;
-        }
-
-        .val-low {
-            color: #f472b6;
-        }
-
-        /* Quote Box */
-        .quote-box {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            line-height: 1.4;
-            color: #fff;
-            text-align: center;
-            padding: 80px 40px;
-            position: relative;
-            margin: 60px 0;
-        }
-
-        .quote-box::before {
-            content: '“';
-            font-size: 8rem;
-            color: rgba(255, 255, 255, 0.05);
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: -1;
-        }
-
-        /* CTA */
-        .cta-section {
-            text-align: center;
-            padding: 100px 0;
-            background: linear-gradient(to top, rgba(255, 255, 255, 0.03), transparent);
-            border-radius: 30px;
-        }
-
-        .fancy-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            background: #fff;
-            color: #000;
-            padding: 20px 40px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 100px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-        }
-
-        .fancy-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 60px rgba(255, 255, 255, 0.3);
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, rgba(255, 71, 87, 0.2) 0%, transparent 100%);
-            padding: 0 5px;
-            border-radius: 4px;
-            color: #ff8c94;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 3.5rem;
-            }
-
-            .pipeline-flow {
-                flex-direction: column;
-                height: auto;
-                padding: 0;
-            }
-
-            .pipeline-flow::before {
-                width: 2px;
-                height: 100%;
-                top: 0;
-                left: 50%;
-            }
-
-            .step {
-                width: 100%;
-                max-width: 200px;
-                margin: 10px 0;
-            }
-
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .song-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); borderColor: #6366f1; }
+        .song-name { font-size: 1.2em; font-weight: 600; margin-bottom: 5px; }
+        .tags { display: flex; }
+        .arrow { opacity: 0.5; }
     </style>
 </head>
-
 <body>
-
-    <header>
-        <div class="hero-glow"></div>
-        <h1 class="hero-title">The Ghost<br>in the Machine</h1>
-        <div class="hero-subtitle">Can Artificial Intelligence Really Understand Indian Music?</div>
-
-        <div class="scroll-indicator">
-            <div class="mouse">
-                <div class="wheel"></div>
+    <h1>Song Analysis Dashboard</h1>
+    <div class="list">
+        
+        <a href="compare_Ghallu_Ghallu.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Ghallu Ghallu</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-            <span style="font-size:0.8rem; letter-spacing:2px; text-transform:uppercase;">Scroll to Explore</span>
-        </div>
-    </header>
-
-    <div class="story-container">
-
-        <!-- Chapter 1 -->
-        <div class="chapter">
-            <span class="chapter-num">01. The Challenge</span>
-            <h2 class="chapter-title">A Labyrinth of Sound</h2>
-            <p>Indian music differs fundamentally from the structured verses of Western pop. It is a continuous tapestry
-                of melody—<span class="highlight">the Raga</span>—weaving seamlessly between vocalist and instrument.
-                The line where a singer stops and a violin begins is often blurry, even to the human ear.</p>
-            <p>For an AI accustomed to 4/4 drum beats, this is a nightmare.</p>
-            <p>We launched an ambitious experiment: Could we build an automated pipeline to listen to a Telugu song and
-                break it down into its cultural soul—<strong>Pallavi</strong>, <strong>Charanam</strong>, and
-                <strong>Interludes</strong>?
-            </p>
-        </div>
-
-        <!-- Chapter 2 -->
-        <div class="chapter">
-            <span class="chapter-num">02. The Engine</span>
-            <h2 class="chapter-title">Building the Brain</h2>
-            <p>We didn't just ask an LLM to guess. We built a bespoke signal processing engine that listens, separates,
-                and mathematically proves structure.</p>
-
-            <div class="viz-box">
-                <div class="pipeline-flow">
-                    <div class="step">Raw Audio</div>
-                    <div class="step demucs-step">Source Sep</div>
-                    <div class="step">VAD</div>
-                    <div class="step">Fingerprint</div>
-                    <div class="step llm-step">LLM Context</div>
-                </div>
-                <p style="text-align: center; font-size: 1rem; margin-top: 30px; color: #666; margin-bottom: 0;">
-                    The system extracts <strong>Melodic Chroma Signatures</strong> to verify if a chorus repeats,
-                    preventing hallucinations.
-                </p>
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Mari_Antaga_Svsc_Movie.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Mari Antaga Svsc Movie</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-        </div>
-
-        <!-- Chapter 3 -->
-        <div class="chapter">
-            <span class="chapter-num">03. The Contenders</span>
-            <h2 class="chapter-title">Demucs vs. SAM</h2>
-            <p>Two AI models entered the arena. Only one survived the noise.</p>
-
-            <div class="grid-2">
-                <div class="model-card demucs-card">
-                    <span class="model-name" style="color:var(--demucs)">Demucs</span>
-                    <p class="model-desc">The "Audio Purist". Operates on raw waveforms. Reliable, steady, but sometimes
-                        conservative with background bleed.</p>
-                </div>
-                <div class="model-card sam-card">
-                    <span class="model-name" style="color:var(--sam)">SAM-Audio</span>
-                    <p class="model-desc">The "New Contender". Recently released audio-specific adaptation of Segment
-                        Anything. Aggressive noise reduction, but untested on Indian Ragas.</p>
-                </div>
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Naa_Autograph_Sweet_Memories.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Naa Autograph Sweet Memories</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-        </div>
-
-        <!-- Chapter 4 -->
-        <div class="chapter">
-            <span class="chapter-num">04. The Failure Mode</span>
-            <h2 class="chapter-title">The "Violin" Problem</h2>
-
-            <div class="quote-box">
-                In 'Naa Autograph', the AI mistook the violin for a human voice, continuously merging the Chorus and
-                Verse.
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Narasimha_-_Narasimha.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Narasimha - Narasimha</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-
-            <p>Because Indian violin styles often mimic the sliding pitch of the human voice (Gamakam), the AI
-                effectively got "tricked". SAM, trained on images, often saw the visual line of a violin frequency and
-                confidently labeled it <strong style="color:#ff6b81">VOCAL</strong>.</p>
-        </div>
-
-        <!-- Chapter 5 -->
-        <div class="chapter">
-            <span class="chapter-num">05. The Verdict</span>
-            <h2 class="chapter-title">By The Numbers</h2>
-
-            <div class="viz-box" style="padding: 0; overflow: hidden;">
-                <table class="stats-table">
-                    <thead>
-                        <tr>
-                            <th style="padding-left: 40px;">Metric</th>
-                            <th style="color:var(--demucs)">Demucs</th>
-                            <th style="color:var(--sam)">SAM</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="padding-left: 40px;">Vocal Preservation</td>
-                            <td class="val-high">High (98%)</td>
-                            <td class="val-low">Mixed (85%)</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 40px;">Pallavi Detection</td>
-                            <td class="val-high">Stable</td>
-                            <td class="val-low">Erratic</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 40px;">Noise Suppression</td>
-                            <td>Moderate</td>
-                            <td class="val-high">Aggressive</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 40px;">Hallucination Rate</td>
-                            <td class="val-high">Low</td>
-                            <td class="val-low">High</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Narasimha_Yekku_Tholi_Mettu.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Narasimha Yekku Tholi Mettu</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
             </div>
-        </div>
-
-        <!-- CTA -->
-        <div class="chapter cta-section">
-            <h2 style="font-size: 3rem; margin-bottom: 20px;">Experience The Data</h2>
-            <p>Listen to the raw stems, check the segmentation, and judge the AI yourself.</p>
-            <br>
-            <a href="dashboard.html" class="fancy-btn">
-                <span>Enter Dashboard</span>
-                <span>→</span>
-            </a>
-        </div>
-
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Nuvvostanante_Nenoddantana_S.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Nuvvostanante Nenoddantana S</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Oh_Sita_Hey_Rama.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Oh Sita Hey Rama</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Pilichina_Ranantava_Song_With.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Pilichina Ranantava Song With</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Raja_Edo_Oka_Ragam.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Raja Edo Oka Ragam</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+        
+        <a href="compare_Robo.html" class="song-card">
+            <div class="song-info">
+                <div class="song-name">Robo</div>
+                <div class="tags"><span style="color:#34d399; opacity:1; font-size:0.8em; border:1px solid #34d399; padding: 2px 6px; border-radius:4px; margin-right:5px;">MANUAL</span><span style="color:#f472b6; opacity:1; font-size:0.8em; border:1px solid #f472b6; padding: 2px 6px; border-radius:4px; margin-right:5px;">DEMUCS</span><span style="color:#818cf8; opacity:1; font-size:0.8em; border:1px solid #818cf8; padding: 2px 6px; border-radius:4px; margin-right:5px;">SAM</span></div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+        
     </div>
-
-    <script>
-        // Scrollytelling Intersection Observer
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.15 });
-
-        document.querySelectorAll('.chapter').forEach((el) => {
-            observer.observe(el);
-        });
-    </script>
 </body>
-
 </html>
+    
